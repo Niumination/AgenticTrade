@@ -1,0 +1,49 @@
+name: Validate signals & regenerate dashboard
+
+on:
+  push:
+    paths: ['signals/**']
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # butuh histori utk cek append-only
+      - name: Validasi JSON sinyal
+        run: |
+          python3 - <<'EOF'
+          import json, glob, sys
+          ok = True
+          required = {"id","instrument","setup","strategy_version","direction","entry","sl","tp","confidence","reasoning","executed"}
+          for p in glob.glob('signals/*.json'):
+              try:
+                  d = json.load(open(p))
+                  missing = required - d.keys()
+                  if missing:
+                      print(f"{p}: field hilang {missing}"); ok = False
+                  if not d.get("reasoning") or d["reasoning"].startswith("TEMPLATE"):
+                      if not p.endswith("example.json"):
+                          print(f"{p}: reasoning kosong"); ok = False
+              except Exception as e:
+                  print(f"{p}: {e}"); ok = False
+          sys.exit(0 if ok else 1)
+          EOF
+      - name: Cek append-only (tidak ada penghapusan/backfill di signals/)
+        run: |
+          CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null -- signals/ || true)
+          for f in $CHANGED; do
+            if [ -f "$f" ]; then
+              # file yang diubah hanya boleh bertambah barisnya (append-only)
+              OLD=$(git show HEAD~1:"$f" 2>/dev/null | wc -l || echo 0)
+              NEW=$(wc -l < "$f")
+              if [ "${NEW:-0}" -lt "${OLD:-0}" ]; then
+                echo "PELANGGARAN append-only: $f menyusut dari $OLD ke $NEW baris"; exit 1
+              fi
+            else
+              echo "PELANGGARAN append-only: $f dihapus"; exit 1
+            fi
+          done
+          echo "append-only OK"
