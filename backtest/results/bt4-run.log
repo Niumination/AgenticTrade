@@ -1,0 +1,56 @@
+[bt4] 2020: streaming ticks -> M1 ...
+[bt4] 2020 base: 300 signals ({'dropped_regime': 8138, 'dropped_news': 0})
+[bt4] 2020 session: 82 signals ({'dropped_regime': 8138, 'dropped_news': 0, 'dropped_session': 218})
+[bt4] 2020 atrpct: 191 signals ({'dropped_regime': 8138, 'dropped_news': 0, 'dropped_atrpct': 109})
+[bt4] 2020 adx: 94 signals ({'dropped_regime': 8138, 'dropped_news': 0, 'dropped_adx': 206})
+[bt4] 2021: streaming ticks -> M1 ...
+[bt4] 2021 base: 300 signals ({'dropped_regime': 7519, 'dropped_news': 3})
+[bt4] 2021 session: 77 signals ({'dropped_regime': 7519, 'dropped_news': 3, 'dropped_session': 223})
+[bt4] 2021 atrpct: 196 signals ({'dropped_regime': 7519, 'dropped_news': 3, 'dropped_atrpct': 104})
+[bt4] 2021 adx: 97 signals ({'dropped_regime': 7519, 'dropped_news': 3, 'dropped_adx': 203})
+[bt4] 2022: streaming ticks -> M1 ...
+[bt4] 2022 base: 300 signals ({'dropped_regime': 7165, 'dropped_news': 4})
+[bt4] 2022 session: 82 signals ({'dropped_regime': 7165, 'dropped_news': 4, 'dropped_session': 218})
+[bt4] 2022 atrpct: 197 signals ({'dropped_regime': 7165, 'dropped_news': 4, 'dropped_atrpct': 103})
+[bt4] 2022 adx: 111 signals ({'dropped_regime': 7165, 'dropped_news': 4, 'dropped_adx': 189})
+[bt4] 2023: streaming ticks -> M1 ...
+[bt4] 2023 base: 300 signals ({'dropped_regime': 7649, 'dropped_news': 2})
+[bt4] 2023 session: 81 signals ({'dropped_regime': 7649, 'dropped_news': 2, 'dropped_session': 219})
+[bt4] 2023 atrpct: 202 signals ({'dropped_regime': 7649, 'dropped_news': 2, 'dropped_atrpct': 98})
+[bt4] 2023 adx: 98 signals ({'dropped_regime': 7649, 'dropped_news': 2, 'dropped_adx': 202})
+[bt4] 2024: streaming ticks -> M1 ...
+[bt4] 2024 base: 300 signals ({'dropped_regime': 6809, 'dropped_news': 4})
+[bt4] 2024 session: 86 signals ({'dropped_regime': 6809, 'dropped_news': 4, 'dropped_session': 214})
+[bt4] 2024 atrpct: 191 signals ({'dropped_regime': 6809, 'dropped_news': 4, 'dropped_atrpct': 109})
+[bt4] 2024 adx: 102 signals ({'dropped_regime': 6809, 'dropped_news': 4, 'dropped_adx': 198})
+[bt4] 2025: streaming ticks -> M1 ...
+[bt4] 2025 base: 300 signals ({'dropped_regime': 6999, 'dropped_news': 3})
+[bt4] 2025 session: 80 signals ({'dropped_regime': 6999, 'dropped_news': 3, 'dropped_session': 220})
+[bt4] 2025 atrpct: 192 signals ({'dropped_regime': 6999, 'dropped_news': 3, 'dropped_atrpct': 108})
+[bt4] 2025 adx: 99 signals ({'dropped_regime': 6999, 'dropped_news': 3, 'dropped_adx': 201})
+[bt4] FOLD f1-2020-2022: IS [2020, 2021] -> OOS 2022
+[bt4] f1-2020-2022 base: best RR 1.5 (IS +5.18R) -> OOS -10.75R (deg -15.93, ODR -2.075, cliff=True)
+[bt4] f1-2020-2022 session: best RR 2.0 (IS +4.24R) -> OOS +9.50R (deg +5.26, ODR 2.239, cliff=True)
+[bt4] f1-2020-2022 atrpct: best RR 3.0 (IS +36.00R) -> OOS -9.21R (deg -45.22, ODR -0.256, cliff=True)
+[bt4] f1-2020-2022 adx: best RR 3.0 (IS +6.29R) -> OOS +19.61R (deg +13.32, ODR 3.118, cliff=True)
+[bt4] FOLD f2-2021-2023: IS [2021, 2022] -> OOS 2023
+[bt4] f2-2021-2023 base: best RR 2.0 (IS -13.69R) -> OOS -4.39R (deg +9.30, ODR None, cliff=True)
+[bt4] f2-2021-2023 session: best RR 2.0 (IS +14.02R) -> OOS -5.28R (deg -19.30, ODR -0.377, cliff=True)
+[bt4] f2-2021-2023 atrpct: best RR 3.0 (IS -7.91R) -> OOS -1.03R (deg +6.88, ODR None, cliff=True)
+[bt4] f2-2021-2023 adx: best RR 3.0 (IS +19.25R) -> OOS -8.33R (deg -27.58, ODR -0.433, cliff=True)
+[bt4] FOLD f3-2022-2024: IS [2022, 2023] -> OOS 2024
+[bt4] f3-2022-2024 base: best RR 2.5 (IS -8.97R) -> OOS +1.79R (deg +10.77, ODR None, cliff=True)
+[bt4] f3-2022-2024 session: best RR 2.5 (IS +13.23R) -> OOS -4.59R (deg -17.82, ODR -0.347, cliff=True)
+[bt4] f3-2022-2024 atrpct: best RR 3.0 (IS -10.24R) -> OOS -11.47R (deg -1.23, ODR None, cliff=True)
+[bt4] f3-2022-2024 adx: best RR 3.0 (IS +11.28R) -> OOS +1.92R (deg -9.35, ODR 0.171, cliff=False)
+[bt4] FOLD f4-2023-2025: IS [2023, 2024] -> OOS 2025
+[bt4] f4-2023-2025 base: best RR 2.5 (IS +1.56R) -> OOS +11.57R (deg +10.01, ODR 7.407, cliff=True)
+[bt4] f4-2023-2025 session: best RR 3.0 (IS -5.23R) -> OOS +13.27R (deg +18.49, ODR None, cliff=True)
+[bt4] f4-2023-2025 atrpct: best RR 2.5 (IS -11.31R) -> OOS +26.00R (deg +37.31, ODR None, cliff=True)
+[bt4] f4-2023-2025 adx: best RR 2.5 (IS -3.25R) -> OOS +16.26R (deg +19.51, ODR None, cliff=True)
+[bt4] trials logged: 144 (budget <= 50 per S6-T1)
+[bt4] summary written: /home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt4-walkforward.json
+[bt4] base     stitched OOS    -1.78R  WFE None  positive 2/4  cliffs 4  RR seq [1.5, 2.0, 2.5, 2.5]
+[bt4] session  stitched OOS   +12.90R  WFE 0.491  positive 2/4  cliffs 4  RR seq [2.0, 2.0, 2.5, 3.0]
+[bt4] atrpct   stitched OOS    +4.29R  WFE 0.656  positive 1/4  cliffs 4  RR seq [3.0, 3.0, 3.0, 2.5]
+[bt4] adx      stitched OOS   +29.46R  WFE 0.878  positive 3/4  cliffs 3  RR seq [3.0, 3.0, 3.0, 2.5]
