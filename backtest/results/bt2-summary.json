@@ -1,0 +1,537 @@
+{
+  "backtest": true,
+  "per_year": {
+    "2020": {
+      "blocked": 273,
+      "blocked_by_guard": [
+        "guard_kill_switch_dd10",
+        "guard_max_positions_2"
+      ],
+      "equity_hwm": 11171.78,
+      "executed": 27,
+      "expectancy_r": -0.0058,
+      "filter_drops": {
+        "dropped_news": 0,
+        "dropped_regime": 8138
+      },
+      "final_equity": 9957.34,
+      "guards_triggered": {
+        "daily_halt_3pct": null,
+        "kill_switch_10pct": true
+      },
+      "label": "BACKTEST / NOT VERIFIED",
+      "losses": 17,
+      "max_consecutive_losses": 10,
+      "max_equity_dd_pct": 10.87,
+      "open_positions_end": 0,
+      "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2020.jsonl",
+      "signals_total": 300,
+      "start_equity": 10000.0,
+      "strategy_version": "0.2-bt-2020",
+      "total_r": -0.1566,
+      "tp_rr": 2.0,
+      "trades_closed": 27,
+      "verification": "NOT VERIFIED",
+      "win_rate_pct": 37.04,
+      "wins": 10,
+      "year": 2020
+    },
+    "2021": {
+      "blocked": 273,
+      "blocked_by_guard": [
+        "guard_kill_switch_dd10"
+      ],
+      "equity_hwm": 10866.12,
+      "executed": 27,
+      "expectancy_r": -0.0894,
+      "filter_drops": {
+        "dropped_news": 3,
+        "dropped_regime": 7519
+      },
+      "final_equity": 9714.39,
+      "guards_triggered": {
+        "daily_halt_3pct": null,
+        "kill_switch_10pct": true
+      },
+      "label": "BACKTEST / NOT VERIFIED",
+      "losses": 20,
+      "max_consecutive_losses": 7,
+      "max_equity_dd_pct": 10.6,
+      "open_positions_end": 0,
+      "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2021.jsonl",
+      "signals_total": 300,
+      "start_equity": 10000.0,
+      "strategy_version": "0.2-bt-2021",
+      "total_r": -2.413,
+      "tp_rr": 2.0,
+      "trades_closed": 27,
+      "verification": "NOT VERIFIED",
+      "win_rate_pct": 25.93,
+      "wins": 7,
+      "year": 2021
+    },
+    "2022": {
+      "blocked": 280,
+      "blocked_by_guard": [
+        "guard_kill_switch_dd10",
+        "guard_max_positions_2"
+      ],
+      "equity_hwm": 10000.0,
+      "executed": 20,
+      "expectancy_r": -0.5639,
+      "filter_drops": {
+        "dropped_news": 4,
+        "dropped_regime": 7165
+      },
+      "final_equity": 8927.56,
+      "guards_triggered": {
+        "daily_halt_3pct": null,
+        "kill_switch_10pct": true
+      },
+      "label": "BACKTEST / NOT VERIFIED",
+      "losses": 17,
+      "max_consecutive_losses": 6,
+      "max_equity_dd_pct": 10.72,
+      "open_positions_end": 0,
+      "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2022.jsonl",
+      "signals_total": 300,
+      "start_equity": 10000.0,
+      "strategy_version": "0.2-bt-2022",
+      "total_r": -11.2788,
+      "tp_rr": 2.0,
+      "trades_closed": 20,
+      "verification": "NOT VERIFIED",
+      "win_rate_pct": 15.0,
+      "wins": 3,
+      "year": 2022
+    },
+    "2023": {
+      "blocked": 269,
+      "blocked_by_guard": [
+        "guard_kill_switch_dd10",
+        "guard_max_positions_2"
+      ],
+      "equity_hwm": 10462.59,
+      "executed": 31,
+      "expectancy_r": -0.1418,
+      "filter_drops": {
+        "dropped_news": 2,
+        "dropped_regime": 7649
+      },
+      "final_equity": 9545.65,
+      "guards_triggered": {
+        "daily_halt_3pct": null,
+        "kill_switch_10pct": true
+      },
+      "label": "BACKTEST / NOT VERIFIED",
+      "losses": 22,
+      "max_consecutive_losses": 11,
+      "max_equity_dd_pct": 8.76,
+      "open_positions_end": 0,
+      "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2023.jsonl",
+      "signals_total": 300,
+      "start_equity": 10000.0,
+      "strategy_version": "0.2-bt-2023",
+      "total_r": -4.3944,
+      "tp_rr": 2.0,
+      "trades_closed": 31,
+      "verification": "NOT VERIFIED",
+      "win_rate_pct": 29.03,
+      "wins": 9,
+      "year": 2023
+    },
+    "2024": {
+      "blocked": 262,
+      "blocked_by_guard": [
+        "guard_daily_loss_halt_3pct",
+        "guard_kill_switch_dd10",
+        "guard_max_positions_2"
+      ],
+      "equity_hwm": 11206.58,
+      "executed": 38,
+      "expectancy_r": -0.0093,
+      "filter_drops": {
+        "dropped_news": 4,
+        "dropped_regime": 6809
+      },
+      "final_equity": 9910.94,
+      "guards_triggered": {
+        "daily_halt_3pct": null,
+        "kill_switch_10pct": true
+      },
+      "label": "BACKTEST / NOT VERIFIED",
+      "losses": 25,
+      "max_consecutive_losses": 12,
+      "max_equity_dd_pct": 11.56,
+      "open_positions_end": 0,
+      "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2024.jsonl",
+      "signals_total": 300,
+      "start_equity": 10000.0,
+      "strategy_version": "0.2-bt-2024",
+      "total_r": -0.3519,
+      "tp_rr": 2.0,
+      "trades_closed": 38,
+      "verification": "NOT VERIFIED",
+      "win_rate_pct": 34.21,
+      "wins": 13,
+      "year": 2024
+    },
+    "2025": {
+      "blocked": 161,
+      "blocked_by_guard": [
+        "guard_kill_switch_dd10",
+        "guard_max_positions_2"
+      ],
+      "equity_hwm": 14203.49,
+      "executed": 139,
+      "expectancy_r": 0.1844,
+      "filter_drops": {
+        "dropped_news": 3,
+        "dropped_regime": 6999
+      },
+      "final_equity": 12609.03,
+      "guards_triggered": {
+        "daily_halt_3pct": null,
+        "kill_switch_10pct": true
+      },
+      "label": "BACKTEST / NOT VERIFIED",
+      "losses": 82,
+      "max_consecutive_losses": 9,
+      "max_equity_dd_pct": 11.23,
+      "open_positions_end": 0,
+      "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2025.jsonl",
+      "signals_total": 300,
+      "start_equity": 10000.0,
+      "strategy_version": "0.2-bt-2025",
+      "total_r": 25.6261,
+      "tp_rr": 2.0,
+      "trades_closed": 139,
+      "verification": "NOT VERIFIED",
+      "win_rate_pct": 41.01,
+      "wins": 57,
+      "year": 2025
+    }
+  },
+  "rr_variants": {
+    "2020": {
+      "1.5": {
+        "executed": 138,
+        "expectancy_r": 0.0746,
+        "max_equity_dd_pct": 10.43,
+        "total_r": 10.2936,
+        "trades_closed": 138,
+        "win_rate_pct": 44.93
+      },
+      "2.0": {
+        "blocked": 273,
+        "blocked_by_guard": [
+          "guard_kill_switch_dd10",
+          "guard_max_positions_2"
+        ],
+        "equity_hwm": 11171.78,
+        "executed": 27,
+        "expectancy_r": -0.0058,
+        "filter_drops": {
+          "dropped_news": 0,
+          "dropped_regime": 8138
+        },
+        "final_equity": 9957.34,
+        "guards_triggered": {
+          "daily_halt_3pct": null,
+          "kill_switch_10pct": true
+        },
+        "label": "BACKTEST / NOT VERIFIED",
+        "losses": 17,
+        "max_consecutive_losses": 10,
+        "max_equity_dd_pct": 10.87,
+        "open_positions_end": 0,
+        "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2020.jsonl",
+        "signals_total": 300,
+        "start_equity": 10000.0,
+        "strategy_version": "0.2-bt-2020",
+        "total_r": -0.1566,
+        "tp_rr": 2.0,
+        "trades_closed": 27,
+        "verification": "NOT VERIFIED",
+        "win_rate_pct": 37.04,
+        "wins": 10,
+        "year": 2020
+      },
+      "2.5": {
+        "executed": 25,
+        "expectancy_r": 0.1418,
+        "max_equity_dd_pct": 10.44,
+        "total_r": 3.5454,
+        "trades_closed": 25,
+        "win_rate_pct": 36.0
+      }
+    },
+    "2021": {
+      "1.5": {
+        "executed": 28,
+        "expectancy_r": -0.1826,
+        "max_equity_dd_pct": 10.69,
+        "total_r": -5.1126,
+        "trades_closed": 28,
+        "win_rate_pct": 28.57
+      },
+      "2.0": {
+        "blocked": 273,
+        "blocked_by_guard": [
+          "guard_kill_switch_dd10"
+        ],
+        "equity_hwm": 10866.12,
+        "executed": 27,
+        "expectancy_r": -0.0894,
+        "filter_drops": {
+          "dropped_news": 3,
+          "dropped_regime": 7519
+        },
+        "final_equity": 9714.39,
+        "guards_triggered": {
+          "daily_halt_3pct": null,
+          "kill_switch_10pct": true
+        },
+        "label": "BACKTEST / NOT VERIFIED",
+        "losses": 20,
+        "max_consecutive_losses": 7,
+        "max_equity_dd_pct": 10.6,
+        "open_positions_end": 0,
+        "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2021.jsonl",
+        "signals_total": 300,
+        "start_equity": 10000.0,
+        "strategy_version": "0.2-bt-2021",
+        "total_r": -2.413,
+        "tp_rr": 2.0,
+        "trades_closed": 27,
+        "verification": "NOT VERIFIED",
+        "win_rate_pct": 25.93,
+        "wins": 7,
+        "year": 2021
+      },
+      "2.5": {
+        "executed": 17,
+        "expectancy_r": -0.3997,
+        "max_equity_dd_pct": 11.53,
+        "total_r": -6.7943,
+        "trades_closed": 17,
+        "win_rate_pct": 11.76
+      }
+    },
+    "2022": {
+      "1.5": {
+        "executed": 18,
+        "expectancy_r": -0.5972,
+        "max_equity_dd_pct": 10.28,
+        "total_r": -10.749,
+        "trades_closed": 18,
+        "win_rate_pct": 16.67
+      },
+      "2.0": {
+        "blocked": 280,
+        "blocked_by_guard": [
+          "guard_kill_switch_dd10",
+          "guard_max_positions_2"
+        ],
+        "equity_hwm": 10000.0,
+        "executed": 20,
+        "expectancy_r": -0.5639,
+        "filter_drops": {
+          "dropped_news": 4,
+          "dropped_regime": 7165
+        },
+        "final_equity": 8927.56,
+        "guards_triggered": {
+          "daily_halt_3pct": null,
+          "kill_switch_10pct": true
+        },
+        "label": "BACKTEST / NOT VERIFIED",
+        "losses": 17,
+        "max_consecutive_losses": 6,
+        "max_equity_dd_pct": 10.72,
+        "open_positions_end": 0,
+        "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2022.jsonl",
+        "signals_total": 300,
+        "start_equity": 10000.0,
+        "strategy_version": "0.2-bt-2022",
+        "total_r": -11.2788,
+        "tp_rr": 2.0,
+        "trades_closed": 20,
+        "verification": "NOT VERIFIED",
+        "win_rate_pct": 15.0,
+        "wins": 3,
+        "year": 2022
+      },
+      "2.5": {
+        "executed": 19,
+        "expectancy_r": -0.4602,
+        "max_equity_dd_pct": 8.44,
+        "total_r": -8.7429,
+        "trades_closed": 19,
+        "win_rate_pct": 15.79
+      }
+    },
+    "2023": {
+      "1.5": {
+        "executed": 32,
+        "expectancy_r": -0.318,
+        "max_equity_dd_pct": 10.79,
+        "total_r": -10.1762,
+        "trades_closed": 32,
+        "win_rate_pct": 28.12
+      },
+      "2.0": {
+        "blocked": 269,
+        "blocked_by_guard": [
+          "guard_kill_switch_dd10",
+          "guard_max_positions_2"
+        ],
+        "equity_hwm": 10462.59,
+        "executed": 31,
+        "expectancy_r": -0.1418,
+        "filter_drops": {
+          "dropped_news": 2,
+          "dropped_regime": 7649
+        },
+        "final_equity": 9545.65,
+        "guards_triggered": {
+          "daily_halt_3pct": null,
+          "kill_switch_10pct": true
+        },
+        "label": "BACKTEST / NOT VERIFIED",
+        "losses": 22,
+        "max_consecutive_losses": 11,
+        "max_equity_dd_pct": 8.76,
+        "open_positions_end": 0,
+        "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2023.jsonl",
+        "signals_total": 300,
+        "start_equity": 10000.0,
+        "strategy_version": "0.2-bt-2023",
+        "total_r": -4.3944,
+        "tp_rr": 2.0,
+        "trades_closed": 31,
+        "verification": "NOT VERIFIED",
+        "win_rate_pct": 29.03,
+        "wins": 9,
+        "year": 2023
+      },
+      "2.5": {
+        "executed": 28,
+        "expectancy_r": -0.0082,
+        "max_equity_dd_pct": 8.3,
+        "total_r": -0.2301,
+        "trades_closed": 28,
+        "win_rate_pct": 28.57
+      }
+    },
+    "2024": {
+      "1.5": {
+        "executed": 39,
+        "expectancy_r": -0.018,
+        "max_equity_dd_pct": 11.56,
+        "total_r": -0.7031,
+        "trades_closed": 39,
+        "win_rate_pct": 41.03
+      },
+      "2.0": {
+        "blocked": 262,
+        "blocked_by_guard": [
+          "guard_daily_loss_halt_3pct",
+          "guard_kill_switch_dd10",
+          "guard_max_positions_2"
+        ],
+        "equity_hwm": 11206.58,
+        "executed": 38,
+        "expectancy_r": -0.0093,
+        "filter_drops": {
+          "dropped_news": 4,
+          "dropped_regime": 6809
+        },
+        "final_equity": 9910.94,
+        "guards_triggered": {
+          "daily_halt_3pct": null,
+          "kill_switch_10pct": true
+        },
+        "label": "BACKTEST / NOT VERIFIED",
+        "losses": 25,
+        "max_consecutive_losses": 12,
+        "max_equity_dd_pct": 11.56,
+        "open_positions_end": 0,
+        "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2024.jsonl",
+        "signals_total": 300,
+        "start_equity": 10000.0,
+        "strategy_version": "0.2-bt-2024",
+        "total_r": -0.3519,
+        "tp_rr": 2.0,
+        "trades_closed": 38,
+        "verification": "NOT VERIFIED",
+        "win_rate_pct": 34.21,
+        "wins": 13,
+        "year": 2024
+      },
+      "2.5": {
+        "executed": 36,
+        "expectancy_r": 0.0498,
+        "max_equity_dd_pct": 11.56,
+        "total_r": 1.7921,
+        "trades_closed": 36,
+        "win_rate_pct": 30.56
+      }
+    },
+    "2025": {
+      "1.5": {
+        "executed": 158,
+        "expectancy_r": 0.0694,
+        "max_equity_dd_pct": 11.25,
+        "total_r": 10.9626,
+        "trades_closed": 158,
+        "win_rate_pct": 44.94
+      },
+      "2.0": {
+        "blocked": 161,
+        "blocked_by_guard": [
+          "guard_kill_switch_dd10",
+          "guard_max_positions_2"
+        ],
+        "equity_hwm": 14203.49,
+        "executed": 139,
+        "expectancy_r": 0.1844,
+        "filter_drops": {
+          "dropped_news": 3,
+          "dropped_regime": 6999
+        },
+        "final_equity": 12609.03,
+        "guards_triggered": {
+          "daily_halt_3pct": null,
+          "kill_switch_10pct": true
+        },
+        "label": "BACKTEST / NOT VERIFIED",
+        "losses": 82,
+        "max_consecutive_losses": 9,
+        "max_equity_dd_pct": 11.23,
+        "open_positions_end": 0,
+        "results_file": "/home/agentuser/agentictrade-work/AgenticTrade/backtest/results/bt2-2025.jsonl",
+        "signals_total": 300,
+        "start_equity": 10000.0,
+        "strategy_version": "0.2-bt-2025",
+        "total_r": 25.6261,
+        "tp_rr": 2.0,
+        "trades_closed": 139,
+        "verification": "NOT VERIFIED",
+        "win_rate_pct": 41.01,
+        "wins": 57,
+        "year": 2025
+      },
+      "2.5": {
+        "executed": 138,
+        "expectancy_r": 0.0841,
+        "max_equity_dd_pct": 10.83,
+        "total_r": 11.5996,
+        "trades_closed": 138,
+        "win_rate_pct": 32.61
+      }
+    }
+  },
+  "strategy": "v0.2 regime+news filter, RR variants",
+  "verification": "NOT VERIFIED"
+}
