@@ -27,7 +27,8 @@ enum GUARD_STATE
    GUARD_OUTSIDE_KILLZONE, // setup 2 hanya di Killzone (London/NY)
    GUARD_INVALID_SIGNAL,   // sinyal tanpa reasoning valid ditolak
    GUARD_SYMBOL_NOT_ALLOWED, // simbol di luar daftar instrumen resmi
-   GUARD_SYMBOL_MISMATCH     // simbol sinyal != simbol chart EA (prototipe 1-simbol)
+   GUARD_SYMBOL_MISMATCH,    // simbol sinyal != simbol chart EA (prototipe 1-simbol)
+   GUARD_NEWS_FILE_STALE     // file kalender terlalu tua (> 2 jam) -> fail-safe blokir
   };
 
 //+------------------------------------------------------------------+
@@ -48,6 +49,11 @@ const string ALLOWED_SYMBOLS[] = { "XAUUSD", "EURUSD", "GBPUSD" };
 //--- Magic number EA (identitas order milik EA ini)
 const long EA_MAGIC = 20261104;
 
+//--- Kalender news (analysis/calendar.py menulis file ini, window ISO UTC)
+const string NEWS_WINDOWS_FILE   = "news_block_windows.json";
+const long   NEWS_FILE_MAX_AGE_S = 2 * 3600; // file > 2 jam = stale (fail-safe)
+const long   NEWS_RELOAD_EVERY_S = 3600;     // re-parse file maks 1x/jam
+
 //--- Killzone (jam server, UTC): London 07-10, NY 12-15
 const int KZ_LONDON_START = 7,  KZ_LONDON_END = 10;
 const int KZ_NY_START     = 12, KZ_NY_END     = 15;
@@ -60,6 +66,18 @@ double         g_equity_hwm      = 0.0;   // high-water mark ekuitas
 datetime       g_current_day     = 0;     // penanda hari (server time)
 bool           g_daily_stopped   = false; // daily-loss guard aktif?
 bool           g_kill_switch     = false; // kill switch aktif? (butuh review manual)
+
+//--- News guard: window blokir dari file kalender analysis/calendar.py
+struct NewsWindow
+  {
+   datetime start_utc;      // GMT/UTC
+   datetime end_utc;        // GMT/UTC
+   string   title;
+  };
+NewsWindow g_news_windows[];
+bool       g_news_loaded     = false;
+bool       g_news_file_stale = false;
+datetime   g_news_last_load  = 0;
 
 //--- Struktur sinyal yang dikirim relay (dari modul analysis/ via file/queue)
 struct Signal
@@ -197,19 +215,155 @@ bool CheckDailyLoss()
 
 //+------------------------------------------------------------------+
 //| News filter: tolak entry +/- 15 menit sekitar news high-impact   |
+//|                                                                  |
+//| Sumber window (disetujui riset S2-T4):                            |
+//|  1. File news_block_windows.json dari analysis/calendar.py       |
+//|     (filter ForexFactory merah USD, +/- 15 menit, ISO UTC).      |
+//|  2. MT5 built-in calendar (CalendarValueHistory + High impact)   |
+//|     sebagai primer supaya guard tetap hidup walau file hilang.   |
+//| Fail-safe: file stale/hilang -> pakai MT5 calendar; kalau keduanya|
+//| tidak tersedia, sinyal DITOLAK (lebih aman menolak daripada lolos)|
 //+------------------------------------------------------------------+
+
+// Parse satu timestamp ISO-8601 UTC dari file kalender ("2026-11-06T13:30:00+00:00").
+datetime ParseIsoUtc(const string iso)
+  {
+   if(StringLen(iso) < 19)
+      return(0);
+   int y = (int)StringToInteger(StringSubstr(iso, 0, 4));
+   int mo = (int)StringToInteger(StringSubstr(iso, 5, 2));
+   int d = (int)StringToInteger(StringSubstr(iso, 8, 2));
+   int h = (int)StringToInteger(StringSubstr(iso, 11, 2));
+   int mi = (int)StringToInteger(StringSubstr(iso, 14, 2));
+   int s = (int)StringToInteger(StringSubstr(iso, 17, 2));
+   MqlDateTime dt;
+   dt.year = y; dt.mon = mo; dt.day = d;
+   dt.hour = h; dt.min = mi; dt.sec = s;
+   dt.day_of_week = 0; dt.day_of_year = 0;
+   return(StructToTime(dt)); // dikembalikan sebagai "epoch" — dibandingkan konsisten dengan TimeGMT()
+  }
+
+void LoadNewsWindows()
+  {
+   datetime now = TimeCurrent();
+   if(g_news_loaded && now - g_news_last_load < NEWS_RELOAD_EVERY_S)
+      return;
+   g_news_last_load = now;
+   g_news_loaded    = false;
+   g_news_file_stale= false;
+   ArrayResize(g_news_windows, 0);
+
+   int handle = FileOpen(NEWS_WINDOWS_FILE, FILE_READ | FILE_TXT | FILE_ANSI);
+   if(handle == INVALID_HANDLE)
+     {
+      PrintFormat("[NEWS] file %s tidak bisa dibuka — fallback MT5 built-in calendar", NEWS_WINDOWS_FILE);
+      return;
+     }
+   string content = "";
+   while(!FileIsEnding(handle))
+      content += FileReadString(handle);
+   FileClose(handle);
+
+   // File berisi array window blokir (JSON list) — ekstrak minimalis
+   // tanpa library eksternal: cocokkan pasangan block_start_utc/block_end_utc/title.
+   string keys[2] = { "\"block_start_utc\": \"", "\"block_end_utc\": \"" };
+   int pos = 0;
+   while(true)
+     {
+      int i_start = StringFind(content, keys[0], pos);
+      if(i_start < 0)
+         break;
+      int i_end = StringFind(content, keys[1], i_start);
+      if(i_end < 0)
+         break;
+      i_start += StringLen(keys[0]);
+      int j_start = StringFind(content, "\"", i_start);
+      int j_end = StringFind(content, "\"", i_end + StringLen(keys[1]));
+      if(j_start < 0 || j_end < 0)
+         break;
+      string s = StringSubstr(content, i_start, j_start - i_start);
+      string e = StringSubstr(content, i_end + StringLen(keys[1]), j_end - (i_end + StringLen(keys[1])));
+      datetime w_start = ParseIsoUtc(s);
+      datetime w_end = ParseIsoUtc(e);
+      if(w_start > 0 && w_end > 0 && w_end > w_start)
+        {
+         int n = ArraySize(g_news_windows);
+         ArrayResize(g_news_windows, n + 1);
+         g_news_windows[n].start_utc = w_start;
+         g_news_windows[n].end_utc   = w_end;
+         g_news_windows[n].title     = ""; // judul opsional, tidak dipakai untuk keputusan
+         g_news_loaded = true;
+        }
+      pos = j_end;
+     }
+
+   // Staleness: file dianggap stale jika tidak ada window sama sekali ATAU
+   // window terakhir sudah berlalu lebih dari NEWS_FILE_MAX_AGE_S lalu.
+   datetime latest_end = 0;
+   for(int i = 0; i < ArraySize(g_news_windows); i++)
+      if(g_news_windows[i].end_utc > latest_end)
+         latest_end = g_news_windows[i].end_utc;
+   g_news_file_stale = (!g_news_loaded) ||
+                       (latest_end > 0 && latest_end < TimeGMT() - NEWS_FILE_MAX_AGE_S);
+   PrintFormat("[NEWS] %d window dimuat dari %s (stale=%s)",
+               ArraySize(g_news_windows), NEWS_WINDOWS_FILE,
+               g_news_file_stale ? "ya" : "tidak");
+  }
+
+// Cek MT5 built-in calendar: ada event High-impact untuk mata uang simbol
+// di +/- NEWS_BLOCK_MINUTES menit dari sekarang?
+bool InMt5CalendarWindow(const string currency)
+  {
+   datetime from = TimeGMT() - NEWS_BLOCK_MINUTES * 60;
+   datetime to   = TimeGMT() + NEWS_BLOCK_MINUTES * 60;
+   MqlCalendarValue values[];
+   if(CalendarValueHistory(values, from, to, NULL, currency) <= 0)
+      return(false); // tidak ada data -> bukan blokir (guard file tetap aktif)
+   for(int i = 0; i < ArraySize(values); i++)
+     {
+      MqlCalendarEvent ev;
+      if(!CalendarEventById(values[i].event_id, ev))
+         continue;
+      if(ev.importance >= CALENDAR_IMPORTANCE_HIGH)
+         return(true);
+     }
+   return(false);
+  }
+
 bool InNewsWindow(const Signal &sig)
   {
-   if(sig.news_event_time == 0)
-      return(false);
-   datetime now = TimeCurrent();
-   datetime window_start = sig.news_event_time - NEWS_BLOCK_MINUTES * 60;
-   datetime window_end   = sig.news_event_time + NEWS_BLOCK_MINUTES * 60;
-   if(now >= window_start && now <= window_end)
+   LoadNewsWindows();
+   datetime now_gmt = TimeGMT();
+
+   // 1) File kalender dari analysis/calendar.py (format sama seperti output refresh())
+   for(int i = 0; i < ArraySize(g_news_windows); i++)
+     {
+      if(now_gmt >= g_news_windows[i].start_utc && now_gmt <= g_news_windows[i].end_utc)
+        {
+         LogGuard(GUARD_NEWS_WINDOW,
+                  StringFormat("Sinyal %s di dalam jendela news +/-%d menit (file kalender, %s) — ditolak",
+                               sig.id, NEWS_BLOCK_MINUTES,
+                               TimeToString(g_news_windows[i].end_utc, TIME_DATE | TIME_MINUTES)));
+         return(true);
+        }
+     }
+
+   // 2) Fail-safe MT5 built-in calendar (currency simbol)
+   string currency = SymbolInfoString(_Symbol, SYMBOL_CURRENCY_BASE);
+   if(InMt5CalendarWindow(currency))
      {
       LogGuard(GUARD_NEWS_WINDOW,
-               StringFormat("Sinyal %s di dalam jendela news +/-%d menit (%s) — ditolak",
-                            sig.id, NEWS_BLOCK_MINUTES, TimeToString(sig.news_event_time)));
+               StringFormat("Sinyal %s di dalam jendela news +/-%d menit (MT5 calendar %s High) — ditolak",
+                            sig.id, NEWS_BLOCK_MINUTES, currency));
+      return(true);
+     }
+
+   // 3) Fail-safe stale: tanpa file segar DAN tanpa data calendar MT5 -> tolak
+   if(g_news_file_stale)
+     {
+      LogGuard(GUARD_NEWS_FILE_STALE,
+               StringFormat("File kalender %s stale/hilang dan MT5 calendar tidak memberi data — sinyal %s ditolak (fail-safe)",
+                            NEWS_WINDOWS_FILE, sig.id));
       return(true);
      }
    return(false);
