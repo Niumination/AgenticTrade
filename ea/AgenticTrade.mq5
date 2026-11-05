@@ -5,6 +5,8 @@
 //|                                                                  |
 //|  Pagar risiko ini NON-NEGOTIABLE: nilai guard hard-coded konstan,|
 //|  tidak diekspos sebagai input yang bisa diubah user.             |
+//|  Cakupan: prototipe SATU simbol — EA hanya mengeksekusi sinyal   |
+//|  pada simbol chart (_Symbol) yang juga ada di ALLOWED_SYMBOLS.   |
 //+------------------------------------------------------------------+
 #property copyright "AgenticTrade"
 #property version   "0.1.0"
@@ -23,7 +25,9 @@ enum GUARD_STATE
    GUARD_NEWS_WINDOW,   // di dalam jendela news merah +/- 15 menit
    GUARD_RISK_TOO_WIDE, // jarak SL membuat lot < lot minimum broker
    GUARD_OUTSIDE_KILLZONE, // setup 2 hanya di Killzone (London/NY)
-   GUARD_INVALID_SIGNAL    // sinyal tanpa reasoning valid ditolak
+   GUARD_INVALID_SIGNAL,   // sinyal tanpa reasoning valid ditolak
+   GUARD_SYMBOL_NOT_ALLOWED, // simbol di luar daftar instrumen resmi
+   GUARD_SYMBOL_MISMATCH     // simbol sinyal != simbol chart EA (prototipe 1-simbol)
   };
 
 //+------------------------------------------------------------------+
@@ -36,6 +40,13 @@ const int    MAX_OPEN_POSITIONS   = 2;     // maks 2 posisi paralel
 const int    NEWS_BLOCK_MINUTES   = 15;    // dilarang trading +/- 15 menit news
 const double MIN_RR_SNIPER        = 1.8;   // RR minimum setup 1 (STRATEGY.md)
 const double MIN_RR_SWEEP         = 2.0;   // RR minimum setup 2 (STRATEGY.md)
+
+//--- Daftar instrumen resmi (RISK.md: dilarang eksekusi di luar daftar ini)
+//--- TODO koordinator: konfirmasi daftar final sebelum rilis.
+const string ALLOWED_SYMBOLS[] = { "XAUUSD", "EURUSD", "GBPUSD" };
+
+//--- Magic number EA (identitas order milik EA ini)
+const long EA_MAGIC = 20261104;
 
 //--- Killzone (jam server, UTC): London 07-10, NY 12-15
 const int KZ_LONDON_START = 7,  KZ_LONDON_END = 10;
@@ -69,7 +80,7 @@ struct Signal
 //+------------------------------------------------------------------+
 int OnInit()
   {
-   trade.SetExpertMagicNumber(20261104);
+   trade.SetExpertMagicNumber(EA_MAGIC);
    trade.SetDeviationInPoints(20);
    trade.SetTypeFillingBySymbol(_Symbol);
    g_equity_hwm = AccountInfoDouble(ACCOUNT_EQUITY);
@@ -229,7 +240,7 @@ int CountOwnPositions()
       if(ticket == 0)
          continue;
       if(PositionGetString(POSITION_SYMBOL) == _Symbol &&
-         PositionGetInteger(POSITION_MAGIC) == 20261104)
+         PositionGetInteger(POSITION_MAGIC) == EA_MAGIC)
          count++;
      }
    return(count);
@@ -267,6 +278,17 @@ double CalcLotByRisk(double entry, double sl)
   }
 
 //+------------------------------------------------------------------+
+//| Simbol di dalam daftar instrumen resmi? (docs/RISK.md)           |
+//+------------------------------------------------------------------+
+bool SymbolAllowed(const string symbol)
+  {
+   for(int i = 0; i < ArraySize(ALLOWED_SYMBOLS); i++)
+      if(ALLOWED_SYMBOLS[i] == symbol)
+         return(true);
+   return(false);
+  }
+
+//+------------------------------------------------------------------+
 //| Core: evaluasi sinyal terhadap SEMUA guard sebelum eksekusi      |
 //| Return: true jika order terkirim. Semua penolakan terlog.        |
 //+------------------------------------------------------------------+
@@ -278,7 +300,25 @@ bool ProcessSignal(const Signal &sig)
    if(CheckDailyLoss())
       return(false);
 
-   // G1: sinyal wajib punya reasoning valid (STRATEGY.md — tanpa reasoning = BUG)
+   // G1: simbol harus di daftar instrumen resmi (docs/RISK.md)
+   if(!SymbolAllowed(sig.symbol))
+     {
+      LogGuard(GUARD_SYMBOL_NOT_ALLOWED,
+               StringFormat("Sinyal %s pada simbol '%s' di luar daftar instrumen resmi — DITOLAK", sig.id, sig.symbol));
+      return(false);
+     }
+
+   // G1b: prototipe berjalan satu simbol per chart — tolak simbol lain agar
+   // kalkulasi risiko (CalcLotByRisk) dan guard posisi/kill-switch selalu
+   // konsisten dengan simbol eksekusi.
+   if(sig.symbol != _Symbol)
+     {
+      LogGuard(GUARD_SYMBOL_MISMATCH,
+               StringFormat("Sinyal %s simbol '%s' != simbol chart '%s' (prototipe 1-simbol) — DITOLAK", sig.id, sig.symbol, _Symbol));
+      return(false);
+     }
+
+   // G2: sinyal wajib punya reasoning valid (STRATEGY.md — tanpa reasoning = BUG)
    if(StringLen(sig.reasoning) == 0)
      {
       LogGuard(GUARD_INVALID_SIGNAL, StringFormat("Sinyal %s tanpa reasoning — DITOLAK (bug, bukan fitur)", sig.id));
@@ -365,7 +405,7 @@ void CloseAllPositions(const string reason)
       if(ticket == 0)
          continue;
       if(PositionGetString(POSITION_SYMBOL) == _Symbol &&
-         PositionGetInteger(POSITION_MAGIC) == 20261104)
+         PositionGetInteger(POSITION_MAGIC) == EA_MAGIC)
         {
          trade.PositionClose(ticket);
          PrintFormat("CLOSE #%I64u — %s", ticket, reason);
