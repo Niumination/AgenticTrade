@@ -41,8 +41,9 @@ dengan pagar risiko yang di-enforce di lapisan EA — bukan di AI.
 
 - [x] **Fase 0 — Fondasi**: dokumentasi publik (`docs/`), kebijakan transparansi, dokumen verifikasi (`docs/VERIFICATION.md`), aturan kerja multi-bot (`AGENTS.md`).
 - [x] **Fase 1a — Fondasi teknis**: prototipe EA dengan pagar risiko hard-coded, modul analisis + suite pytest, engine backtest internal (dataset tick XAUUSD 2020–2025).
-- [ ] **Fase 1b — Demo + dashboard audit publik**: EA jalan di **demo**, dashboard audit publik dari `signals/` sejak hari pertama, verifikasi pihak ketiga (Myfxbook/FXBlue read-only) **menyusul**.
-- [ ] **Fase 2 — Track record terverifikasi**: akun real kecil via MQL5 Signals/Myfxbook; perbaikan berdasarkan data.
+- [x] **Fase 1 — Backtest internal**: engine backtest dijalankan pada dataset tick XAUUSD 2020–2025 (strategi v0.1). **Hasil dipublikasi apa adanya di [`docs/VERIFICATION.md`](docs/VERIFICATION.md), status NOT VERIFIED: kumulatif ± −15R (3 tahun positif tipis, 3 tahun terakhir negatif), kill switch 10% terpicu tiap tahun.** Strategi v0.1 belum layak dijalankan; biaya (swap/komisi) belum dimodelkan lengkap.
+- [ ] **Fase 1b — Demo + dashboard audit publik**: EA jalan di **demo**, dashboard audit publik dari `signals/` sejak hari pertama, verifikasi pihak ketiga (Myfxbook/FXBlue read-only) **menyusul**. Iterasi **v0.2 sedang berjalan**, diarahkan oleh temuan review metodologi (biaya, konsistensi metrik, bug end-of-data).
+- [ ] **Fase 2 — Track record terverifikasi**: verifikasi pihak ketiga via **Myfxbook/MQL5 adalah gerbang wajib** sebelum ada angka yang boleh diperlakukan sebagai track record; akun real kecil melalui jalur tersebut; perbaikan berdasarkan data.
 - [ ] **Fase 3 — Partisipasi komunitas**: beta pengguna awal (user jalankan di akunnya sendiri), mekanisme masukan publik.
 
 > Status terkini tiap fase mengikuti dokumen di repositori (terutama
