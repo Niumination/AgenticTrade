@@ -61,12 +61,12 @@ def load_signals():
                 signals.extend(data)
             else:
                 signals.append(data)
+                missing = REQUIRED_FIELDS - set(data)
+                if missing:
+                    errors.append(f"{os.path.basename(path)}: missing fields {sorted(missing)}")
         except Exception as exc:  # noqa: BLE001 — surface, never mutate
             errors.append(f"{os.path.basename(path)}: {exc}")
             continue
-        missing = REQUIRED_FIELDS - set(data)
-        if missing:
-            errors.append(f"{os.path.basename(path)}: missing fields {sorted(missing)}")
     return signals, errors
 
 
