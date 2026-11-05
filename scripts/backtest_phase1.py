@@ -194,52 +194,36 @@ def run_engine_year(signals, m1_bars, year, run_id):
 # Step 4: signals/-schema per-year log for the dashboard
 # --------------------------------------------------------------------------- #
 def write_signals_log(year, run_id, rows, signals):
-    """Append-only file signals/<date>.backtest-<year>.json, engine rows
-    (entry + close, engine schema) converted minimally: close rows carry
-    result.r = pnl_r so dashboard/outcome_r computes real R."""
-    out = []
-    by_id = {s["id"]: s for s in signals}
+    """One parser/CI-compliant JSON object per signal in signals/:
+    the engine ENTRY row, with `result` replaced by its close result and
+    result.r = pnl_r so dashboard/outcome_r computes real R. Signals that
+    never closed keep the engine's open-status result. Files are new-only
+    (append-only safe: existing files are never rewritten)."""
+    closes = {}
+    entries = []
     for row in rows:
         if row.get("_header"):
             continue
         if row.get("run_kind") == "close":
-            res = dict(row["result"] or {})
-            res["r"] = res.get("pnl_r", 0.0)
-            base = by_id.get(row.get("id"), {})
-            out.append({
-                "id": row["id"] + ":close",
-                "instrument": base.get("instrument", "XAUUSD"),
-                "setup": base.get("setup", "smc_mss_m15_tp2r"),
-                "strategy_version": row.get("strategy_version")
-                                    or base.get("strategy_version"),
-                "direction": base.get("direction"),
-                "entry": base.get("entry"),
-                "sl": base.get("sl"),
-                "tp": base.get("tp"),
-                "rr": base.get("rr"),
-                "confidence": base.get("confidence"),
-                "reasoning": base.get("reasoning"),
-                "model": base.get("model"),
-                "created_at": (res.get("closed_at") or ""),
-                "risk_checks": {"within_daily_loss_limit": True,
-                                "within_max_positions": True,
-                                "news_filter_clear": None},
-                "backtest": True,
-                "run_kind": "close",
-                "executed": True,
-                "blocked_reason": None,
-                "result": res,
-                "source": "backtest_engine",
-                "verification": NOT_VERIFIED,
-            })
+            closes.setdefault(row["id"], row["result"])
         else:
-            out.append(row)          # engine entry row already full schema
-    path = os.path.join(SIGNALS_DIR, "%s.backtest-%d.json"
-                        % (datetime.now(timezone.utc).strftime("%Y-%m-%d"), year))
-    with open(path, "a", encoding="utf-8") as f:    # APPEND-ONLY
-        json.dump(out, f, sort_keys=True)
-        f.write("\n")
-    return path
+            entries.append(row)
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    os.makedirs(SIGNALS_DIR, exist_ok=True)
+    paths = []
+    for n, e in enumerate(entries):
+        res = closes.get(e["id"])
+        out = dict(e)
+        if res:
+            out["result"] = dict(res, r=res.get("pnl_r", 0.0))
+        path = os.path.join(SIGNALS_DIR, "%s.backtest-%d-%03d.json"
+                            % (stamp, year, n))
+        with open(path, "x", encoding="utf-8") as f:   # never overwrite
+            json.dump(out, f, sort_keys=True, indent=1)
+            f.write("\n")
+        paths.append(path)
+    return os.path.join(SIGNALS_DIR, "%s.backtest-%d-*.json" % (stamp, year)) \
+        if paths else None
 
 
 # --------------------------------------------------------------------------- #
