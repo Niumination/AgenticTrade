@@ -1,0 +1,27 @@
+{
+ "blocked_reason": "guard_max_positions_2",
+ "confidence": 0.5,
+ "created_at": "2020-01-06T13:30:00Z",
+ "direction": "sell",
+ "entry": 1574.205,
+ "executed": false,
+ "id": "2020-01-06-s007-bt",
+ "instrument": "XAUUSD",
+ "model": "scripts/backtest_phase1.py (rule-based, no AI)",
+ "reasoning": "BACKTEST ONLY - rolling M15 window 242 bars, MSS bearish at 1576.105, SL last opposite swing 1579.278, TP 2R",
+ "result": null,
+ "risk_checks": {
+  "news_filter_clear": null,
+  "within_daily_loss_limit": true,
+  "within_max_positions": false
+ },
+ "rr": 2.0,
+ "run_kind": "entry",
+ "setup": "smc_mss_m15_tp2r",
+ "simulated_at": "2020-01-06T13:31:00+00:00",
+ "sl": 1579.278,
+ "source": "backtest_engine",
+ "strategy_version": "0.1-bt-2020",
+ "tp": 1564.059,
+ "verification": "NOT VERIFIED"
+}
