@@ -1,0 +1,677 @@
+{
+  "backtest": true,
+  "experiments": {
+    "ema_shift": {
+      "2020": {
+        "commission": {
+          "comm10.5": {
+            "executed": 26,
+            "expectancy_r": 0.0208,
+            "final_equity": 10027.64,
+            "max_consecutive_losses": 10,
+            "max_equity_dd_pct": 10.11,
+            "total_r": 0.5417,
+            "trades_closed": 26,
+            "win_rate_pct": 38.46
+          },
+          "comm3.5": {
+            "executed": 27,
+            "expectancy_r": 0.0062,
+            "final_equity": 9989.51,
+            "max_consecutive_losses": 10,
+            "max_equity_dd_pct": 10.71,
+            "total_r": 0.1662,
+            "trades_closed": 27,
+            "win_rate_pct": 37.04
+          },
+          "comm7.0": {
+            "executed": 27,
+            "expectancy_r": -0.0058,
+            "final_equity": 9957.34,
+            "max_consecutive_losses": 10,
+            "max_equity_dd_pct": 10.87,
+            "total_r": -0.1566,
+            "trades_closed": 27,
+            "win_rate_pct": 37.04
+          }
+        },
+        "ema_variants": {
+          "ema15-45": {
+            "executed": 29,
+            "expectancy_r": 0.0133,
+            "final_equity": 10016.81,
+            "max_consecutive_losses": 10,
+            "max_equity_dd_pct": 10.27,
+            "total_r": 0.3843,
+            "trades_closed": 29,
+            "win_rate_pct": 37.93
+          },
+          "ema20-50": {
+            "executed": 27,
+            "expectancy_r": -0.0058,
+            "final_equity": 9957.34,
+            "max_consecutive_losses": 10,
+            "max_equity_dd_pct": 10.87,
+            "total_r": -0.1566,
+            "trades_closed": 27,
+            "win_rate_pct": 37.04
+          },
+          "ema25-55": {
+            "executed": 132,
+            "expectancy_r": 0.1212,
+            "final_equity": 11551.14,
+            "max_consecutive_losses": 8,
+            "max_equity_dd_pct": 10.82,
+            "total_r": 16.0006,
+            "trades_closed": 132,
+            "win_rate_pct": 40.91
+          }
+        },
+        "slippage": {
+          "slip0.5": {
+            "executed": 27,
+            "expectancy_r": 0.011,
+            "final_equity": 10001.68,
+            "max_consecutive_losses": 10,
+            "max_equity_dd_pct": 10.86,
+            "total_r": 0.2977,
+            "trades_closed": 27,
+            "win_rate_pct": 37.04
+          },
+          "slip1.0": {
+            "executed": 27,
+            "expectancy_r": -0.0058,
+            "final_equity": 9957.34,
+            "max_consecutive_losses": 10,
+            "max_equity_dd_pct": 10.87,
+            "total_r": -0.1566,
+            "trades_closed": 27,
+            "win_rate_pct": 37.04
+          },
+          "slip1.5": {
+            "executed": 27,
+            "expectancy_r": -0.0221,
+            "final_equity": 9914.56,
+            "max_consecutive_losses": 10,
+            "max_equity_dd_pct": 10.88,
+            "total_r": -0.5962,
+            "trades_closed": 27,
+            "win_rate_pct": 37.04
+          }
+        },
+        "verification": "NOT VERIFIED",
+        "year": 2020
+      },
+      "2021": {
+        "commission": {
+          "comm10.5": {
+            "executed": 27,
+            "expectancy_r": -0.0944,
+            "final_equity": 9701.22,
+            "max_consecutive_losses": 7,
+            "max_equity_dd_pct": 10.69,
+            "total_r": -2.5479,
+            "trades_closed": 27,
+            "win_rate_pct": 25.93
+          },
+          "comm3.5": {
+            "executed": 27,
+            "expectancy_r": -0.0844,
+            "final_equity": 9727.56,
+            "max_consecutive_losses": 7,
+            "max_equity_dd_pct": 10.5,
+            "total_r": -2.2781,
+            "trades_closed": 27,
+            "win_rate_pct": 25.93
+          },
+          "comm7.0": {
+            "executed": 27,
+            "expectancy_r": -0.0894,
+            "final_equity": 9714.39,
+            "max_consecutive_losses": 7,
+            "max_equity_dd_pct": 10.6,
+            "total_r": -2.413,
+            "trades_closed": 27,
+            "win_rate_pct": 25.93
+          }
+        },
+        "ema_variants": {
+          "ema15-45": {
+            "executed": 56,
+            "expectancy_r": -0.0424,
+            "final_equity": 9690.31,
+            "max_consecutive_losses": 7,
+            "max_equity_dd_pct": 11.61,
+            "total_r": -2.3769,
+            "trades_closed": 56,
+            "win_rate_pct": 32.14
+          },
+          "ema20-50": {
+            "executed": 27,
+            "expectancy_r": -0.0894,
+            "final_equity": 9714.39,
+            "max_consecutive_losses": 7,
+            "max_equity_dd_pct": 10.6,
+            "total_r": -2.413,
+            "trades_closed": 27,
+            "win_rate_pct": 25.93
+          },
+          "ema25-55": {
+            "executed": 18,
+            "expectancy_r": -0.133,
+            "final_equity": 9738.63,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 10.58,
+            "total_r": -2.3936,
+            "trades_closed": 18,
+            "win_rate_pct": 27.78
+          }
+        },
+        "slippage": {
+          "slip0.5": {
+            "executed": 27,
+            "expectancy_r": -0.0823,
+            "final_equity": 9732.31,
+            "max_consecutive_losses": 7,
+            "max_equity_dd_pct": 10.53,
+            "total_r": -2.2228,
+            "trades_closed": 27,
+            "win_rate_pct": 25.93
+          },
+          "slip1.0": {
+            "executed": 27,
+            "expectancy_r": -0.0894,
+            "final_equity": 9714.39,
+            "max_consecutive_losses": 7,
+            "max_equity_dd_pct": 10.6,
+            "total_r": -2.413,
+            "trades_closed": 27,
+            "win_rate_pct": 25.93
+          },
+          "slip1.5": {
+            "executed": 27,
+            "expectancy_r": -0.0963,
+            "final_equity": 9696.83,
+            "max_consecutive_losses": 7,
+            "max_equity_dd_pct": 10.66,
+            "total_r": -2.5996,
+            "trades_closed": 27,
+            "win_rate_pct": 25.93
+          }
+        },
+        "verification": "NOT VERIFIED",
+        "year": 2021
+      },
+      "2022": {
+        "commission": {
+          "comm10.5": {
+            "executed": 14,
+            "expectancy_r": -0.5972,
+            "final_equity": 9192.02,
+            "max_consecutive_losses": 8,
+            "max_equity_dd_pct": 8.08,
+            "total_r": -8.361,
+            "trades_closed": 14,
+            "win_rate_pct": 14.29
+          },
+          "comm3.5": {
+            "executed": 20,
+            "expectancy_r": -0.5555,
+            "final_equity": 8942.65,
+            "max_consecutive_losses": 6,
+            "max_equity_dd_pct": 10.57,
+            "total_r": -11.1109,
+            "trades_closed": 20,
+            "win_rate_pct": 15.0
+          },
+          "comm7.0": {
+            "executed": 20,
+            "expectancy_r": -0.5639,
+            "final_equity": 8927.56,
+            "max_consecutive_losses": 6,
+            "max_equity_dd_pct": 10.72,
+            "total_r": -11.2788,
+            "trades_closed": 20,
+            "win_rate_pct": 15.0
+          }
+        },
+        "ema_variants": {
+          "ema15-45": {
+            "executed": 17,
+            "expectancy_r": -0.5005,
+            "final_equity": 9176.48,
+            "max_consecutive_losses": 5,
+            "max_equity_dd_pct": 8.24,
+            "total_r": -8.5082,
+            "trades_closed": 17,
+            "win_rate_pct": 17.65
+          },
+          "ema20-50": {
+            "executed": 20,
+            "expectancy_r": -0.5639,
+            "final_equity": 8927.56,
+            "max_consecutive_losses": 6,
+            "max_equity_dd_pct": 10.72,
+            "total_r": -11.2788,
+            "trades_closed": 20,
+            "win_rate_pct": 15.0
+          },
+          "ema25-55": {
+            "executed": 104,
+            "expectancy_r": -0.0151,
+            "final_equity": 9730.64,
+            "max_consecutive_losses": 8,
+            "max_equity_dd_pct": 8.92,
+            "total_r": -1.5697,
+            "trades_closed": 104,
+            "win_rate_pct": 35.58
+          }
+        },
+        "slippage": {
+          "slip0.5": {
+            "executed": 20,
+            "expectancy_r": -0.5608,
+            "final_equity": 8933.11,
+            "max_consecutive_losses": 6,
+            "max_equity_dd_pct": 10.67,
+            "total_r": -11.2164,
+            "trades_closed": 20,
+            "win_rate_pct": 15.0
+          },
+          "slip1.0": {
+            "executed": 20,
+            "expectancy_r": -0.5639,
+            "final_equity": 8927.56,
+            "max_consecutive_losses": 6,
+            "max_equity_dd_pct": 10.72,
+            "total_r": -11.2788,
+            "trades_closed": 20,
+            "win_rate_pct": 15.0
+          },
+          "slip1.5": {
+            "executed": 20,
+            "expectancy_r": -0.567,
+            "final_equity": 8922.1,
+            "max_consecutive_losses": 6,
+            "max_equity_dd_pct": 10.78,
+            "total_r": -11.3403,
+            "trades_closed": 20,
+            "win_rate_pct": 15.0
+          }
+        },
+        "verification": "NOT VERIFIED",
+        "year": 2022
+      },
+      "2023": {
+        "commission": {
+          "comm10.5": {
+            "executed": 31,
+            "expectancy_r": -0.1478,
+            "final_equity": 9527.82,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 8.84,
+            "total_r": -4.5818,
+            "trades_closed": 31,
+            "win_rate_pct": 29.03
+          },
+          "comm3.5": {
+            "executed": 31,
+            "expectancy_r": -0.1357,
+            "final_equity": 9563.51,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 8.68,
+            "total_r": -4.2074,
+            "trades_closed": 31,
+            "win_rate_pct": 29.03
+          },
+          "comm7.0": {
+            "executed": 31,
+            "expectancy_r": -0.1418,
+            "final_equity": 9545.65,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 8.76,
+            "total_r": -4.3944,
+            "trades_closed": 31,
+            "win_rate_pct": 29.03
+          }
+        },
+        "ema_variants": {
+          "ema15-45": {
+            "executed": 37,
+            "expectancy_r": -0.1772,
+            "final_equity": 9341.49,
+            "max_consecutive_losses": 8,
+            "max_equity_dd_pct": 10.49,
+            "total_r": -6.5564,
+            "trades_closed": 37,
+            "win_rate_pct": 27.03
+          },
+          "ema20-50": {
+            "executed": 31,
+            "expectancy_r": -0.1418,
+            "final_equity": 9545.65,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 8.76,
+            "total_r": -4.3944,
+            "trades_closed": 31,
+            "win_rate_pct": 29.03
+          },
+          "ema25-55": {
+            "executed": 29,
+            "expectancy_r": -0.238,
+            "final_equity": 9310.02,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 10.63,
+            "total_r": -6.9015,
+            "trades_closed": 29,
+            "win_rate_pct": 24.14
+          }
+        },
+        "slippage": {
+          "slip0.5": {
+            "executed": 31,
+            "expectancy_r": -0.1351,
+            "final_equity": 9565.0,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 8.72,
+            "total_r": -4.1876,
+            "trades_closed": 31,
+            "win_rate_pct": 29.03
+          },
+          "slip1.0": {
+            "executed": 31,
+            "expectancy_r": -0.1418,
+            "final_equity": 9545.65,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 8.76,
+            "total_r": -4.3944,
+            "trades_closed": 31,
+            "win_rate_pct": 29.03
+          },
+          "slip1.5": {
+            "executed": 31,
+            "expectancy_r": -0.1483,
+            "final_equity": 9526.73,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 8.81,
+            "total_r": -4.5971,
+            "trades_closed": 31,
+            "win_rate_pct": 29.03
+          }
+        },
+        "verification": "NOT VERIFIED",
+        "year": 2023
+      },
+      "2024": {
+        "commission": {
+          "comm10.5": {
+            "executed": 38,
+            "expectancy_r": -0.0165,
+            "final_equity": 9883.59,
+            "max_consecutive_losses": 12,
+            "max_equity_dd_pct": 11.65,
+            "total_r": -0.6283,
+            "trades_closed": 38,
+            "win_rate_pct": 34.21
+          },
+          "comm3.5": {
+            "executed": 38,
+            "expectancy_r": -0.0011,
+            "final_equity": 9940.86,
+            "max_consecutive_losses": 12,
+            "max_equity_dd_pct": 11.45,
+            "total_r": -0.0411,
+            "trades_closed": 38,
+            "win_rate_pct": 34.21
+          },
+          "comm7.0": {
+            "executed": 38,
+            "expectancy_r": -0.0093,
+            "final_equity": 9910.94,
+            "max_consecutive_losses": 12,
+            "max_equity_dd_pct": 11.56,
+            "total_r": -0.3519,
+            "trades_closed": 38,
+            "win_rate_pct": 34.21
+          }
+        },
+        "ema_variants": {
+          "ema15-45": {
+            "executed": 39,
+            "expectancy_r": -0.0305,
+            "final_equity": 9819.23,
+            "max_consecutive_losses": 11,
+            "max_equity_dd_pct": 8.85,
+            "total_r": -1.1904,
+            "trades_closed": 39,
+            "win_rate_pct": 33.33
+          },
+          "ema20-50": {
+            "executed": 38,
+            "expectancy_r": -0.0093,
+            "final_equity": 9910.94,
+            "max_consecutive_losses": 12,
+            "max_equity_dd_pct": 11.56,
+            "total_r": -0.3519,
+            "trades_closed": 38,
+            "win_rate_pct": 34.21
+          },
+          "ema25-55": {
+            "executed": 40,
+            "expectancy_r": 0.0098,
+            "final_equity": 9967.73,
+            "max_consecutive_losses": 9,
+            "max_equity_dd_pct": 11.19,
+            "total_r": 0.3936,
+            "trades_closed": 40,
+            "win_rate_pct": 35.0
+          }
+        },
+        "slippage": {
+          "slip0.5": {
+            "executed": 38,
+            "expectancy_r": -0.0006,
+            "final_equity": 9942.58,
+            "max_consecutive_losses": 12,
+            "max_equity_dd_pct": 11.56,
+            "total_r": -0.0223,
+            "trades_closed": 38,
+            "win_rate_pct": 34.21
+          },
+          "slip1.0": {
+            "executed": 38,
+            "expectancy_r": -0.0093,
+            "final_equity": 9910.94,
+            "max_consecutive_losses": 12,
+            "max_equity_dd_pct": 11.56,
+            "total_r": -0.3519,
+            "trades_closed": 38,
+            "win_rate_pct": 34.21
+          },
+          "slip1.5": {
+            "executed": 38,
+            "expectancy_r": -0.0177,
+            "final_equity": 9880.11,
+            "max_consecutive_losses": 12,
+            "max_equity_dd_pct": 11.56,
+            "total_r": -0.6742,
+            "trades_closed": 38,
+            "win_rate_pct": 34.21
+          }
+        },
+        "verification": "NOT VERIFIED",
+        "year": 2024
+      },
+      "2025": {
+        "commission": {
+          "comm10.5": {
+            "executed": 139,
+            "expectancy_r": 0.1808,
+            "final_equity": 12547.31,
+            "max_consecutive_losses": 9,
+            "max_equity_dd_pct": 11.28,
+            "total_r": 25.1338,
+            "trades_closed": 139,
+            "win_rate_pct": 41.01
+          },
+          "comm3.5": {
+            "executed": 139,
+            "expectancy_r": 0.1879,
+            "final_equity": 12671.05,
+            "max_consecutive_losses": 9,
+            "max_equity_dd_pct": 11.18,
+            "total_r": 26.1174,
+            "trades_closed": 139,
+            "win_rate_pct": 41.01
+          },
+          "comm7.0": {
+            "executed": 139,
+            "expectancy_r": 0.1844,
+            "final_equity": 12609.03,
+            "max_consecutive_losses": 9,
+            "max_equity_dd_pct": 11.23,
+            "total_r": 25.6261,
+            "trades_closed": 139,
+            "win_rate_pct": 41.01
+          }
+        },
+        "ema_variants": {
+          "ema15-45": {
+            "executed": 142,
+            "expectancy_r": 0.1356,
+            "final_equity": 11869.4,
+            "max_consecutive_losses": 8,
+            "max_equity_dd_pct": 8.95,
+            "total_r": 19.2611,
+            "trades_closed": 142,
+            "win_rate_pct": 40.14
+          },
+          "ema20-50": {
+            "executed": 139,
+            "expectancy_r": 0.1844,
+            "final_equity": 12609.03,
+            "max_consecutive_losses": 9,
+            "max_equity_dd_pct": 11.23,
+            "total_r": 25.6261,
+            "trades_closed": 139,
+            "win_rate_pct": 41.01
+          },
+          "ema25-55": {
+            "executed": 174,
+            "expectancy_r": 0.0984,
+            "final_equity": 11569.15,
+            "max_consecutive_losses": 8,
+            "max_equity_dd_pct": 10.51,
+            "total_r": 17.116,
+            "trades_closed": 174,
+            "win_rate_pct": 38.51
+          }
+        },
+        "slippage": {
+          "slip0.5": {
+            "executed": 139,
+            "expectancy_r": 0.1899,
+            "final_equity": 12703.41,
+            "max_consecutive_losses": 9,
+            "max_equity_dd_pct": 11.18,
+            "total_r": 26.3956,
+            "trades_closed": 139,
+            "win_rate_pct": 41.01
+          },
+          "slip1.0": {
+            "executed": 139,
+            "expectancy_r": 0.1844,
+            "final_equity": 12609.03,
+            "max_consecutive_losses": 9,
+            "max_equity_dd_pct": 11.23,
+            "total_r": 25.6261,
+            "trades_closed": 139,
+            "win_rate_pct": 41.01
+          },
+          "slip1.5": {
+            "executed": 139,
+            "expectancy_r": 0.1789,
+            "final_equity": 12516.47,
+            "max_consecutive_losses": 9,
+            "max_equity_dd_pct": 11.28,
+            "total_r": 24.8653,
+            "trades_closed": 139,
+            "win_rate_pct": 41.01
+          }
+        },
+        "verification": "NOT VERIFIED",
+        "year": 2025
+      }
+    },
+    "notes": [
+      "EMA shift changes signal generation (regime filter + EMA slope agreement)",
+      "slippage/commission shift engine-only, same EMA20/50 RR2.0 signals",
+      "news slippage multiplier 3x applies on top of base slippage"
+    ],
+    "oos_split": {
+      "experiments": [
+        {
+          "chosen_rr": 1.5,
+          "degradation_r": 5.6513,
+          "is_per_year": {
+            "2020": 10.2936,
+            "2021": -5.1126,
+            "2022": -10.749
+          },
+          "is_total_r": -5.568,
+          "is_years": [
+            "2020",
+            "2021",
+            "2022"
+          ],
+          "oos_per_year": {
+            "2023": -10.1762,
+            "2024": -0.7031,
+            "2025": 10.9626
+          },
+          "oos_total_r": 0.0833,
+          "oos_years": [
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "verification": "NOT VERIFIED"
+        },
+        {
+          "chosen_rr": 2.0,
+          "degradation_r": -34.7282,
+          "is_per_year": {
+            "2023": -4.3944,
+            "2024": -0.3519,
+            "2025": 25.6261
+          },
+          "is_total_r": 20.8798,
+          "is_years": [
+            "2023",
+            "2024",
+            "2025"
+          ],
+          "oos_per_year": {
+            "2020": -0.1566,
+            "2021": -2.413,
+            "2022": -11.2788
+          },
+          "oos_total_r": -13.8484,
+          "oos_years": [
+            "2020",
+            "2021",
+            "2022"
+          ],
+          "verification": "NOT VERIFIED"
+        }
+      ],
+      "method": "RR-grid parameter selection (the only fitted choice in the rule-based v0.2); IS = pick best total_r, OOS = apply unchanged",
+      "rr_grid_totals": {
+        "1.5": -5.4847,
+        "2.0": 7.0314,
+        "2.5": 1.1698
+      }
+    }
+  },
+  "verification": "NOT VERIFIED"
+}
