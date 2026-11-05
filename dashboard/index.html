@@ -2,40 +2,41 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<title>AgenticTrade — Tear Sheet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgenticTrade — Tear Sheet (Backtest)</title>
 <style>
   body { font-family: system-ui, sans-serif; margin: 2rem; color: #1a1a1a; }
-  .banner { background: #b00020; color: #fff; padding: 1rem; font-weight: 700;
-             border-radius: 6px; margin-bottom: 1.5rem; }
-  .banner.ok { background: #1b5e20; }
+  .banner { background: #b00020; color: #fff; padding: 1rem 1.25rem; font-weight: 700;
+             border-radius: 6px; margin-bottom: 1.5rem; font-size: 1.05rem; }
   table { border-collapse: collapse; margin: 1rem 0; }
   th, td { border: 1px solid #ccc; padding: .4rem .8rem; text-align: right; }
+  th { background: #f4f4f4; }
   th:first-child, td:first-child { text-align: left; }
-  h1 { font-size: 1.4rem; }
+  h1 { font-size: 1.4rem; } h2 { font-size: 1.1rem; }
 </style>
 </head>
 <body>
-<div class="banner">BACKTEST/INTERNAL — NOT VERIFIED. Ini BUKAN track record real. Angka berasal dari log internal; lihat docs/VERIFICATION.md.</div>
-<h1>AgenticTrade — Tear Sheet (dari signals/, append-only)</h1>
+<div class="banner">⚠ BACKTEST / NOT VERIFIED — Ini BUKAN track record live/real.
+Semua angka berasal dari backtest internal (data tick Dukascopy 2020–2025, rule-based SMC MSS,
+strategy_version 0.1-bt-*). Belum diverifikasi pihak ketiga; lihat docs/VERIFICATION.md.</div>
+<h1>AgenticTrade — Tear Sheet Backtest (XAUUSD, 2020–2025)</h1>
 <h2>Overall</h2>
-<p>Sinyal total: 1801 &middot; ditutup: 0
- &middot; total R: 0 R</p>
-<h2>Statistik per versi strategi</h2>
+<p>Sinyal: 1800 &middot; dieksekusi: 534 &middot; ditutup: 534
+&middot; win: 179 &middot; loss: 355
+&middot; win rate: 33.5% &middot; expectancy: -0.0282 R
+&middot; total R: -15.08 R &middot; worst-year max DD: 11.5%
+&middot; max losing streak: 12</p>
+<h2>Per tahun (masing-masing mulai dari equity $10.000, guards RISK.md aktif)</h2>
 <table>
-<thead><tr><th>Versi</th><th>Sinyal</th><th>Ditutup</th><th>Win</th><th>Loss</th>
-<th>Win rate</th><th>Expectancy</th><th>Total R</th><th>Max DD</th><th>Max losing streak</th></tr></thead>
+<thead><tr><th>Tahun</th><th>Sinyal</th><th>Dieksekusi</th><th>Ditutup</th><th>Win</th>
+<th>Loss</th><th>Win rate</th><th>Expectancy</th><th>Total R</th><th>Max DD</th>
+<th>Max losing streak</th></tr></thead>
 <tbody>
-<tr><td>0.1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>—</td><td>— R</td><td>0 R</td><td>0.0 R</td><td>0</td></tr>
-<tr><td>0.1-bt-2020</td><td>300</td><td>0</td><td>0</td><td>0</td><td>—</td><td>— R</td><td>0 R</td><td>0.0 R</td><td>0</td></tr>
-<tr><td>0.1-bt-2021</td><td>300</td><td>0</td><td>0</td><td>0</td><td>—</td><td>— R</td><td>0 R</td><td>0.0 R</td><td>0</td></tr>
-<tr><td>0.1-bt-2022</td><td>300</td><td>0</td><td>0</td><td>0</td><td>—</td><td>— R</td><td>0 R</td><td>0.0 R</td><td>0</td></tr>
-<tr><td>0.1-bt-2023</td><td>300</td><td>0</td><td>0</td><td>0</td><td>—</td><td>— R</td><td>0 R</td><td>0.0 R</td><td>0</td></tr>
-<tr><td>0.1-bt-2024</td><td>300</td><td>0</td><td>0</td><td>0</td><td>—</td><td>— R</td><td>0 R</td><td>0.0 R</td><td>0</td></tr>
-<tr><td>0.1-bt-2025</td><td>300</td><td>0</td><td>0</td><td>0</td><td>—</td><td>— R</td><td>0 R</td><td>0.0 R</td><td>0</td></tr>
+<tr><td>2020</td><td>300</td><td>75</td><td>75</td><td>26</td><td>49</td><td>34.7%</td><td>0.0097 R</td><td>0.72 R</td><td>10.1%</td><td>8</td></tr><tr><td>2021</td><td>300</td><td>60</td><td>60</td><td>21</td><td>39</td><td>35.0%</td><td>0.0291 R</td><td>1.75 R</td><td>10.3%</td><td>8</td></tr><tr><td>2022</td><td>300</td><td>162</td><td>162</td><td>56</td><td>106</td><td>34.6%</td><td>0.0101 R</td><td>1.63 R</td><td>11.4%</td><td>12</td></tr><tr><td>2023</td><td>300</td><td>63</td><td>63</td><td>20</td><td>43</td><td>31.7%</td><td>-0.0476 R</td><td>-3.00 R</td><td>10.0%</td><td>7</td></tr><tr><td>2024</td><td>300</td><td>67</td><td>67</td><td>23</td><td>44</td><td>34.3%</td><td>-0.0740 R</td><td>-4.96 R</td><td>11.5%</td><td>10</td></tr><tr><td>2025</td><td>300</td><td>107</td><td>107</td><td>33</td><td>74</td><td>30.8%</td><td>-0.1049 R</td><td>-11.22 R</td><td>11.3%</td><td>10</td></tr>
 </tbody>
 </table>
-
-<p><em>Dihasilkan otomatis oleh dashboard/generate.py. Input hanya dibaca, tidak pernah ditulis ulang.
-Statistik tidak digabung antar versi strategi.</em></p>
+<p><em>Sumber: backtest/results/bt1-*.jsonl (append-only). Dihasilkan oleh
+dashboard/generate_pages.py. Banner BACKTEST/NOT VERIFIED wajib tampil sampai ada
+verifikasi pihak ketiga.</em></p>
 </body>
 </html>
