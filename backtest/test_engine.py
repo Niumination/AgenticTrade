@@ -109,7 +109,15 @@ class TestRiskSizing(unittest.TestCase):
 
 class TestExecution(unittest.TestCase):
     def _run(self, signals, price_fn, minutes=600):
-        eng = E.Engine(equity=10000.0)
+        # zero-cost engine: pure execution semantics tested here; costs have
+        # their own tests in TestCosts (engine default carries broker costs)
+        eng = E.Engine(equity=10000.0, costs={
+            "commission_per_lot_roundturn_usd": 0.0,
+            "swap_long_per_lot_night_usd": 0.0,
+            "swap_short_per_lot_night_usd": 0.0,
+            "pip_value_per_lot_usd": 10.0,
+            "swap_triple_night_weekday": 2,
+        })
         eng.run(signals, tick_series(minutes, price_fn))
         return eng
 
@@ -276,6 +284,94 @@ class TestOutput(unittest.TestCase):
             after = open(path).read()
             self.assertTrue(after.startswith(before))
             self.assertGreater(len(after), len(before))
+
+
+class TestCosts(unittest.TestCase):
+    """S3-T4 review: swap/commission model + news slippage + eod pnl fix."""
+
+    def _zero_cost(self):
+        return {
+            "commission_per_lot_roundturn_usd": 0.0,
+            "swap_long_per_lot_night_usd": 0.0,
+            "swap_short_per_lot_night_usd": 0.0,
+            "pip_value_per_lot_usd": 10.0,
+            "swap_triple_night_weekday": 2,
+        }
+
+    def test_commission_subtracted_from_pnl_r(self):
+        c = self._zero_cost()
+        c["commission_per_lot_roundturn_usd"] = 7.0
+        eng = E.Engine(equity=10000.0, costs=c)
+        s = sig("a")
+        eng.run([s], tick_series(10, lambda i: 3000.0))
+        closes = [x for x in eng.close_log if x["signal_id"] == "a"]
+        # fill 3000.2, sl 2998 -> 22 pips risk = 220 usd/lot -> 0.4545 lots
+        # commission = 7 * 0.4545 = 3.18 usd = 0.0318 R
+        # eod dist = -0.2 = -2 pips -> -0.0909 R before costs
+        self.assertAlmostEqual(closes[0]["cost_r"], 0.0318, places=4)
+        self.assertAlmostEqual(closes[0]["pnl_r"],
+                               -0.0909 - closes[0]["cost_r"], places=4)
+
+    def test_swap_short_reduces_loss(self):
+        c = self._zero_cost()
+        c["swap_short_per_lot_night_usd"] = 2.0  # short receives swap
+        eng = E.Engine(equity=10000.0, costs=c)
+        # sell: fill = bid - 0 = 3000.0, sl 3002 -> 20 pips risk, 0.5 lots
+        # price flat, never hits sl/tp -> eod, pnl_r = 0 - swap cost
+        s = sig("a", direction="sell", entry=3000.0, sl=3002.0, tp=2994.0,
+                created=datetime(2026, 11, 3, 7, 0, tzinfo=timezone.utc))
+        eng.run([s], tick_series(2 * 24 * 60, lambda i: 3000.0))
+        closes = [x for x in eng.close_log if x["signal_id"] == "a"]
+        self.assertEqual(closes[0]["outcome"], "eod")
+        # nights = 2 days diff + 2 extra (Wed triple) = 4 -> 4*2*0.5 = 4 usd = 0.04R
+        self.assertAlmostEqual(closes[0]["cost_r"], 0.04, places=4)
+        # pnl_r = eod dist (exit ask 3000.2 vs entry 3000 = -2 pips) - 0.04
+        self.assertAlmostEqual(closes[0]["pnl_r"], -2.0 / 20.0 - 0.04, places=4)
+
+    def test_swap_triple_wednesday(self):
+        c = self._zero_cost()
+        c["swap_short_per_lot_night_usd"] = 2.0
+        eng = E.Engine(equity=10000.0, costs=c)
+        # open Tue Nov 3, close Wed Nov 4 -> 1 night + Wed triple = 3 nights
+        s = sig("a", direction="sell", entry=3000.0, sl=3002.0, tp=2994.0,
+                created=datetime(2026, 11, 3, 7, 0, tzinfo=timezone.utc))
+        eng.run([s], tick_series(28 * 60, lambda i: 3000.0))
+        closes = [x for x in eng.close_log if x["signal_id"] == "a"]
+        # 3 nights * 2 usd * 0.5 lots = 3 usd = 0.03 R
+        self.assertAlmostEqual(closes[0]["cost_r"], 0.03, places=4)
+
+    def test_eod_profit_not_forced_to_minus_1r(self):
+        c = self._zero_cost()
+        eng = E.Engine(equity=10000.0, costs=c)
+        # buy signal at min 1, price rises but never reaches tp -> eod
+        s = sig("a", entry=3000.0, sl=2998.0, tp=3006.0, created=ts(1))
+        eng.run([s], tick_series(5, lambda i: 3000.0))
+        closes = [x for x in eng.close_log if x["signal_id"] == "a"]
+        self.assertEqual(closes[0]["outcome"], "eod")
+        # last bid 3000, fill 3000.2 -> -0.2 = -2 pips / 22 pips risk
+        self.assertAlmostEqual(closes[0]["pnl_r"], -2.0 / 22.0, places=4)
+
+    def test_news_window_widens_slippage(self):
+        c = self._zero_cost()
+        news = [(ts(0), ts(30), "NFP")]
+        eng = E.Engine(equity=10000.0, slippage_points=1.0,
+                       news_windows=news, costs=c)
+        row = {}
+        eng._open(sig("a"), ts(10), 3000.0, 3000.2, row)
+        self.assertTrue(row["executed"])
+        self.assertTrue(row["result"]["in_news_window"])
+        # slippage 1 pt = 0.1 * 3x = 0.3 -> fill ask 3000.2 + 0.3
+        self.assertAlmostEqual(row["result"]["fill"], 3000.5, places=6)
+        # same fill outside news window
+        eng2 = E.Engine(equity=10000.0, slippage_points=1.0, costs=c)
+        row2 = {}
+        eng2._open(sig("b"), ts(40), 3000.0, 3000.2, row2)
+        self.assertFalse(row2["result"]["in_news_window"])
+        self.assertAlmostEqual(row2["result"]["fill"], 3000.3, places=6)
+
+    def test_news_windows_loader_missing_file_is_noop(self):
+        self.assertEqual(E.load_news_windows(None), [])
+        self.assertEqual(E.load_news_windows("/nonexistent/path.json"), [])
 
 
 if __name__ == "__main__":
