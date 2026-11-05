@@ -23,16 +23,32 @@ Risk guards (docs/RISK.md) are enforced HERE, at engine level, hard-coded:
   - Every blocked guard is recorded in blocked_reason (evidence the guard
     works; blocked signals stay visible in the log per VERIFICATION.md).
 
-Execution model: conservative, minimal slippage.
-  - Entry: a signal created at tick T fills at the NEXT tick (T+1) at ask
-    (buy) / bid (sell), plus a fixed slippage in pips.
-  - SL/TP: SL assumed hit before TP when both levels lie within one tick's
-    range (conservative). Exits at exact SL/TP price.
+Execution model — Fill convention (documented, S3-T4 review item):
+  - T+1 FILL: a signal created at tick T fills at the NEXT tick (T+1),
+    never at the signal tick itself (no look-ahead: the loop only fills
+    signals with created_at < current tick's timestamp, strictly).
+  - Entry fills at ask (buy) / bid (sell), plus slippage. Slippage is
+    widened inside news block windows (NEWS_SLIPPAGE_MULTIPLIER on the
+    base slippage), approximating the spread expansion around releases.
+  - SL/TP: SL assumed hit before TP when both levels lie within one
+    tick's range (conservative). Exits at exact SL/TP price.
+  - SL gap: a market fill that lands at/beyond SL is refused
+    (guard_fill_gap_through_sl) instead of booking an instant >1R loss.
 
-P&L model (Fase 1 simplification, explicit): money R = equity * 1%; a
-closed trade moves equity by +R * pnl_r (tp) or -R (sl). End-of-data exits
-use pnl_r from the actual exit distance. This keeps results in R units —
-compatible with the dashboard's R-based drawdown/streak stats.
+P&L model: money R = equity * 1%; a closed trade moves equity by
+  +pnl_r * R where pnl_r is the actual exit distance in R units
+  (positive or negative) — including end-of-data exits, which use the
+  real exit distance (outcome "eod"), NOT a fabricated -1R (S3-T4 fix).
+
+Cost model (per position, S3-T4 review item — swap/commission):
+  - Commission: COMMISSION_PER_LOT_ROUNDTURN USD per lot round turn,
+    charged at close. Lot size = risk_money / (risk_pips * pip_value_per_lot).
+  - Swap: SWAP_LONG/SHORT_PER_LOT_NIGHT USD per lot per night held,
+    charged at close; nights counted open->close, x3 on Wednesday roll
+    (broker convention). Defaults are conservative typical XAUUSD
+    broker estimates — configurable via CLI, clearly labelled estimates.
+  - Both are converted to R (divided by the position's risk_money) and
+    subtracted from pnl_r, so results stay in dashboard-compatible R.
 
 STATUS: internal backtest — all output marked NOT VERIFIED; never present
 as a real track record (docs/VERIFICATION.md).
@@ -50,7 +66,7 @@ import glob
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -66,6 +82,43 @@ ALLOWED_SYMBOLS = ("XAUUSD",)           # daftar instrumen resmi
 PIP_SIZE = {"XAUUSD": 0.1}              # 1 pip = 0.1 pada XAUUSD (konvensi 1 pip = 10 points)
 
 NOT_VERIFIED = "NOT VERIFIED"
+
+# ---- Cost model (S3-T4 review: swap/commission material for XAUUSD) ----
+# Conservative TYPICAL broker estimates, NOT live feed values; tunable via CLI.
+COSTS = {
+    "commission_per_lot_roundturn_usd": 7.0,  # round-turn, per 1.0 lot
+    "swap_long_per_lot_night_usd": -8.0,      # paid (negative) per night long
+    "swap_short_per_lot_night_usd": 2.0,      # received/charged per night short
+    "pip_value_per_lot_usd": 10.0,            # XAUUSD: 1 pip (0.1) = $10/lot
+    "swap_triple_night_weekday": 2,           # Wednesday roll -> 3x swap
+}
+# News slippage: inside a news block window, slippage is multiplied.
+NEWS_SLIPPAGE_MULTIPLIER = 3.0
+
+
+def load_news_windows(path):
+    """Load analysis/calendar.py block-window JSON (optional). -> sorted list."""
+    if not path:
+        return []
+    try:
+        with open(path, encoding="utf-8") as f:
+            windows = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        print("WARN: cannot load news windows %s: %s" % (path, exc),
+              file=sys.stderr)
+        return []
+    out = []
+    for w in windows if isinstance(windows, list) else []:
+        s = w.get("block_start_utc")
+        e = w.get("block_end_utc")
+        if s and e:
+            try:
+                out.append((_parse_ts(s), _parse_ts(e),
+                            str(w.get("title", ""))))
+            except (ValueError, TypeError):
+                continue
+    out.sort()
+    return out
 
 
 # --------------------------------------------------------------------------- #
@@ -120,10 +173,10 @@ def load_ticks(path):
 # --------------------------------------------------------------------------- #
 class Position(object):
     __slots__ = ("signal_id", "direction", "entry", "sl", "tp", "risk_pips",
-                 "risk_money", "open_time")
+                 "risk_money", "open_time", "lots")
 
     def __init__(self, signal_id, direction, entry, sl, tp, risk_pips,
-                 risk_money, open_time):
+                 risk_money, open_time, lots):
         self.signal_id = signal_id
         self.direction = direction
         self.entry = entry
@@ -132,16 +185,21 @@ class Position(object):
         self.risk_pips = risk_pips
         self.risk_money = risk_money
         self.open_time = open_time
+        self.lots = lots
 
 
 class Engine(object):
     """Event-driven simulator. One instance == one backtest run."""
 
-    def __init__(self, equity=10000.0, slippage_points=0.0, pip=0.1):
+    def __init__(self, equity=10000.0, slippage_points=0.0, pip=0.1,
+                 news_windows=None, costs=None):
         self.equity = float(equity)
         self.equity_hwm = self.equity
         self.slippage_points = float(slippage_points)
         self.pip = float(pip)
+        self.news_windows = list(news_windows or [])
+        self._news_idx = 0
+        self.costs = dict(COSTS if costs is None else costs)
         self.open_positions = []       # list[Position]
         self.seen_signal_ids = set()   # duplicate-signal protection
         self.halted_today = None       # day_key where 3% daily halt triggered
@@ -171,6 +229,34 @@ class Engine(object):
 
     def _equity_dd_pct(self):
         return (self.equity_hwm - self.equity) / self.equity_hwm * 100.0
+
+    def _in_news_window(self, ts):
+        """True if ts falls inside any loaded news block window."""
+        for start, end, _title in self.news_windows:
+            if start <= ts <= end:
+                return True
+        return False
+
+    def _cost_r(self, pos, ts):
+        """Commission + swap for this position, expressed in R units."""
+        c = self.costs
+        lots = pos.lots
+        commission = c["commission_per_lot_roundturn_usd"] * lots
+        nights = 0
+        if pos.open_time and ts:
+            d0 = pos.open_time.date()
+            d1 = ts.date()
+            nights = (d1 - d0).days
+            if nights > 0:
+                # triple-swap Wednesday roll (broker convention)
+                weds = sum(1 for i in range(nights)
+                           if (d0 + timedelta(days=i + 1)).weekday()
+                           == c["swap_triple_night_weekday"])
+                nights += 2 * weds
+        swap_rate = (c["swap_long_per_lot_night_usd"] if pos.direction == "buy"
+                     else c["swap_short_per_lot_night_usd"])
+        swap = swap_rate * nights * lots
+        return (commission + swap) / pos.risk_money if pos.risk_money else 0.0
 
     # ---- guards (RISK.md at engine level) ----
     def _guard(self, sig, tick_time):
@@ -208,13 +294,16 @@ class Engine(object):
         return fill <= sl if direction == "buy" else fill >= sl
 
     # ---- execution ----
-    def _fill_price(self, direction, bid, ask):
+    def _fill_price(self, direction, bid, ask, ts=None):
         slip = self.slippage_points * self.pip
+        if ts is not None and self._in_news_window(ts):
+            # wider spread/slippage around high-impact releases (S3-T4)
+            slip *= NEWS_SLIPPAGE_MULTIPLIER
         return (ask + slip) if direction == "buy" else (bid - slip)
 
     def _open(self, sig, fill_ts, bid, ask, row):
         direction = sig["direction"].lower()
-        fill = self._fill_price(direction, bid, ask)
+        fill = self._fill_price(direction, bid, ask, fill_ts)
         sl, tp = float(sig["sl"]), float(sig.get("tp") or 0)
         risk_pips = abs(self._to_pips(fill - sl))
         if risk_pips <= 0:
@@ -227,26 +316,40 @@ class Engine(object):
             row["blocked_reason"] = "guard_fill_gap_through_sl"
             return
         risk_money = self.equity * RISK["max_risk_per_position_pct"] / 100.0
+        lots = risk_money / (risk_pips * self.costs["pip_value_per_lot_usd"])
         self.seen_signal_ids.add(sig["id"])
         self.open_positions.append(Position(
-            sig["id"], direction, fill, sl, tp, risk_pips, risk_money, fill_ts))
+            sig["id"], direction, fill, sl, tp, risk_pips, risk_money, fill_ts,
+            lots))
         row["executed"] = True
         row["result"] = {
             "status": "open",
             "fill": round(fill, 5),
             "slippage": round(abs(fill - (ask if direction == "buy" else bid)), 5),
+            "in_news_window": self._in_news_window(fill_ts),
             "risk_pips": round(risk_pips, 2),
             "risk_money": round(risk_money, 2),
+            "lots": round(lots, 4),
             "risk_cap_pct": RISK["max_risk_per_position_pct"],
             "opened_at": fill_ts.isoformat(),
         }
 
     def _close(self, pos, ts, exit_price, outcome):
-        """Settle a position. pnl in R units vs its own risk_money."""
+        """Settle a position. pnl in R units vs its own risk_money.
+
+        outcome 'sl' books exactly -1R + costs (stop exit at the stop price).
+        'eod' (end-of-data) books the REAL exit distance, not a fabricated
+        value (S3-T4 fix). Costs (commission + swap) are subtracted in R.
+        """
         if outcome == "sl":
             pnl_r = -1.0
         else:
-            pnl_r = self._to_pips(abs(exit_price - pos.entry)) / pos.risk_pips
+            # signed distance: favourable exit is positive regardless of side
+            dist = (exit_price - pos.entry) if pos.direction == "buy" \
+                else (pos.entry - exit_price)
+            pnl_r = self._to_pips(dist) / pos.risk_pips
+        cost_r = self._cost_r(pos, ts)
+        pnl_r -= cost_r
         pnl = pnl_r * pos.risk_money
         self.equity += pnl
         self.day_pnl += pnl
@@ -258,6 +361,7 @@ class Engine(object):
             self.killed = True
         rec = {"signal_id": pos.signal_id, "outcome": outcome,
                "exit": round(exit_price, 5), "pnl_r": round(pnl_r, 4),
+               "cost_r": round(cost_r, 4),
                "pnl": round(pnl, 2), "equity": round(self.equity, 2),
                "equity_dd_pct": round(self._equity_dd_pct(), 2),
                "daily_dd_pct": round(self._daily_dd_pct(), 2),
@@ -369,16 +473,15 @@ class Engine(object):
                         self._open(sig, ts, bid, ask, row)
                     self.rows.append(row)
             # else: first tick has no previous-tick signal; positions cannot exist
-        # end of data: settle remaining positions at last tick, tagged
+        # end of data: settle remaining positions at last tick, tagged "eod".
+        # S3-T4 fix: pnl_r = REAL exit distance (may be positive); never
+        # force -1R when the position is actually in profit.
         if self.open_positions and ticks:
             ts, bid, ask = ticks[-1]
             for pos in list(self.open_positions):
                 exit_px = bid if pos.direction == "buy" else ask
-                outcome = "tp" if ((pos.direction == "buy" and exit_px > pos.entry)
-                                   or (pos.direction == "sell" and exit_px < pos.entry)) \
-                    else "sl"
                 self.open_positions.remove(pos)
-                self._append_close_row(self._close(pos, ts, exit_px, outcome))
+                self._append_close_row(self._close(pos, ts, exit_px, "eod"))
         return self.rows
 
     # ---- metrics (dashboard-compatible) ----
@@ -448,17 +551,35 @@ def main(argv=None):
     ap.add_argument("--slippage-points", type=float, default=0.0)
     ap.add_argument("--pip", type=float, default=PIP_SIZE["XAUUSD"])
     ap.add_argument("--results-dir", default=os.path.join(REPO, "backtest", "results"))
+    ap.add_argument("--news-windows",
+                    help="JSON file of news block windows (analysis/calendar.py format); "
+                         "slippage is widened inside these windows")
+    ap.add_argument("--commission-per-lot", type=float,
+                    default=COSTS["commission_per_lot_roundturn_usd"])
+    ap.add_argument("--swap-long", type=float,
+                    default=COSTS["swap_long_per_lot_night_usd"])
+    ap.add_argument("--swap-short", type=float,
+                    default=COSTS["swap_short_per_lot_night_usd"])
     args = ap.parse_args(argv)
+
+    costs = dict(COSTS)
+    costs["commission_per_lot_roundturn_usd"] = args.commission_per_lot
+    costs["swap_long_per_lot_night_usd"] = args.swap_long
+    costs["swap_short_per_lot_night_usd"] = args.swap_short
 
     signals = load_signals(args.signals)
     ticks = load_ticks(args.ticks)
+    news = load_news_windows(args.news_windows)
     eng = Engine(equity=args.equity, slippage_points=args.slippage_points,
-                 pip=args.pip)
+                 pip=args.pip, news_windows=news, costs=costs)
     rows = eng.run(signals, ticks)
     path = write_results(rows, args.run_id, args.results_dir,
                          meta={"ticks_file": os.path.abspath(args.ticks),
                                "start_equity": args.equity,
-                               "slippage_points": args.slippage_points})
+                               "slippage_points": args.slippage_points,
+                               "news_windows_file": args.news_windows,
+                               "news_windows_loaded": len(news),
+                               "costs": costs})
     print(json.dumps({"results": path, "metrics": eng.metrics(),
                       "verification": NOT_VERIFIED}, indent=2))
     return 0
