@@ -1,0 +1,35 @@
+{
+ "blocked_reason": null,
+ "confidence": 0.5,
+ "created_at": "2020-01-09T01:45:00Z",
+ "direction": "buy",
+ "entry": 1560.805,
+ "executed": true,
+ "id": "2020-01-09-b016-bt",
+ "instrument": "XAUUSD",
+ "model": "scripts/backtest_phase1.py (rule-based, no AI)",
+ "reasoning": "BACKTEST ONLY - rolling M15 window 400 bars, MSS bullish at 1560.215, SL last opposite swing 1553.735, TP 2R",
+ "result": {
+  "fill": 1561.314,
+  "opened_at": "2020-01-09T01:46:00+00:00",
+  "risk_cap_pct": 1.0,
+  "risk_money": 105.21,
+  "risk_pips": 75.79,
+  "slippage": 0.0,
+  "status": "open"
+ },
+ "risk_checks": {
+  "news_filter_clear": null,
+  "within_daily_loss_limit": true,
+  "within_max_positions": true
+ },
+ "rr": 2.0,
+ "run_kind": "entry",
+ "setup": "smc_mss_m15_tp2r",
+ "simulated_at": "2020-01-09T01:46:00+00:00",
+ "sl": 1553.735,
+ "source": "backtest_engine",
+ "strategy_version": "0.1-bt-2020",
+ "tp": 1574.945,
+ "verification": "NOT VERIFIED"
+}
