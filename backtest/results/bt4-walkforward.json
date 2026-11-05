@@ -1,0 +1,561 @@
+{
+  "backtest": true,
+  "method": "rolling WFO: IS 2y -> OOS 1y, roll 1y, RR grid [1.5, 2.0, 2.5, 3.0], purge 2d",
+  "strategy": "v0.3 walk-forward over v0.2 signal generator",
+  "variants": {
+    "adx": {
+      "best_rr_sequence": [
+        3.0,
+        3.0,
+        3.0,
+        2.5
+      ],
+      "cliffs": 3,
+      "folds": [
+        {
+          "cliff_at_best": true,
+          "degradation_r": 13.3187,
+          "fold": "f1-2020-2022",
+          "is_best_rr": 3.0,
+          "is_grid": {
+            "1.5": -6.4463,
+            "2.0": 3.3067,
+            "2.5": 3.3618,
+            "3.0": 6.2894
+          },
+          "is_neighbours": {
+            "2.5": 3.3618
+          },
+          "is_total_r": 6.2894,
+          "is_trades": 100,
+          "is_years": [
+            2020,
+            2021
+          ],
+          "odr": 3.118,
+          "oos_max_dd_pct": 3.08,
+          "oos_total_r": 19.6081,
+          "oos_trades": 83,
+          "oos_win_rate_pct": 32.53,
+          "oos_year": 2022,
+          "purged_signals": 0,
+          "variant": "adx"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": -27.5817,
+          "fold": "f2-2021-2023",
+          "is_best_rr": 3.0,
+          "is_grid": {
+            "1.5": -6.1025,
+            "2.0": 1.7346,
+            "2.5": 9.3908,
+            "3.0": 19.2509
+          },
+          "is_neighbours": {
+            "2.5": 9.3908
+          },
+          "is_total_r": 19.2509,
+          "is_trades": 149,
+          "is_years": [
+            2021,
+            2022
+          ],
+          "odr": -0.433,
+          "oos_max_dd_pct": 11.18,
+          "oos_total_r": -8.3308,
+          "oos_trades": 26,
+          "oos_win_rate_pct": 19.23,
+          "oos_year": 2023,
+          "purged_signals": 0,
+          "variant": "adx"
+        },
+        {
+          "cliff_at_best": false,
+          "degradation_r": -9.354,
+          "fold": "f3-2022-2024",
+          "is_best_rr": 3.0,
+          "is_grid": {
+            "1.5": -9.7174,
+            "2.0": -2.148,
+            "2.5": 8.3008,
+            "3.0": 11.2773
+          },
+          "is_neighbours": {
+            "2.5": 8.3008
+          },
+          "is_total_r": 11.2773,
+          "is_trades": 109,
+          "is_years": [
+            2022,
+            2023
+          ],
+          "odr": 0.171,
+          "oos_max_dd_pct": 10.56,
+          "oos_total_r": 1.9233,
+          "oos_trades": 16,
+          "oos_win_rate_pct": 25.0,
+          "oos_year": 2024,
+          "purged_signals": 0,
+          "variant": "adx"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": 19.5101,
+          "fold": "f4-2023-2025",
+          "is_best_rr": 2.5,
+          "is_grid": {
+            "1.5": -14.1856,
+            "2.0": -6.2884,
+            "2.5": -3.2478,
+            "3.0": -6.4075
+          },
+          "is_neighbours": {
+            "2.0": -6.2884,
+            "3.0": -6.4075
+          },
+          "is_total_r": -3.2478,
+          "is_trades": 71,
+          "is_years": [
+            2023,
+            2024
+          ],
+          "odr": null,
+          "oos_max_dd_pct": 10.42,
+          "oos_total_r": 16.2623,
+          "oos_trades": 92,
+          "oos_win_rate_pct": 35.87,
+          "oos_year": 2025,
+          "purged_signals": 0,
+          "variant": "adx"
+        }
+      ],
+      "is_aggregate_r": 33.5698,
+      "label": "BACKTEST / NOT VERIFIED",
+      "odr_folds": [
+        3.118,
+        -0.433,
+        0.171
+      ],
+      "oos_positive_segments": "3/4",
+      "oos_stitched_r": 29.4629,
+      "wfe": 0.878
+    },
+    "atrpct": {
+      "best_rr_sequence": [
+        3.0,
+        3.0,
+        3.0,
+        2.5
+      ],
+      "cliffs": 4,
+      "folds": [
+        {
+          "cliff_at_best": true,
+          "degradation_r": -45.2156,
+          "fold": "f1-2020-2022",
+          "is_best_rr": 3.0,
+          "is_grid": {
+            "1.5": 1.849,
+            "2.0": -4.0312,
+            "2.5": 17.647,
+            "3.0": 36.0034
+          },
+          "is_neighbours": {
+            "2.5": 17.647
+          },
+          "is_total_r": 36.0034,
+          "is_trades": 228,
+          "is_years": [
+            2020,
+            2021
+          ],
+          "odr": -0.256,
+          "oos_max_dd_pct": 11.64,
+          "oos_total_r": -9.2122,
+          "oos_trades": 16,
+          "oos_win_rate_pct": 12.5,
+          "oos_year": 2022,
+          "purged_signals": 0,
+          "variant": "atrpct"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": 6.8804,
+          "fold": "f2-2021-2023",
+          "is_best_rr": 3.0,
+          "is_grid": {
+            "1.5": -17.2885,
+            "2.0": -14.1816,
+            "2.5": -8.8615,
+            "3.0": -7.9091
+          },
+          "is_neighbours": {
+            "2.5": -8.8615
+          },
+          "is_total_r": -7.9091,
+          "is_trades": 93,
+          "is_years": [
+            2021,
+            2022
+          ],
+          "odr": null,
+          "oos_max_dd_pct": 11.66,
+          "oos_total_r": -1.0287,
+          "oos_trades": 32,
+          "oos_win_rate_pct": 25.0,
+          "oos_year": 2023,
+          "purged_signals": 0,
+          "variant": "atrpct"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": -1.2285,
+          "fold": "f3-2022-2024",
+          "is_best_rr": 3.0,
+          "is_grid": {
+            "1.5": -17.1851,
+            "2.0": -19.2688,
+            "2.5": -11.8638,
+            "3.0": -10.2409
+          },
+          "is_neighbours": {
+            "2.5": -11.8638
+          },
+          "is_total_r": -10.2409,
+          "is_trades": 48,
+          "is_years": [
+            2022,
+            2023
+          ],
+          "odr": null,
+          "oos_max_dd_pct": 11.15,
+          "oos_total_r": -11.4694,
+          "oos_trades": 23,
+          "oos_win_rate_pct": 13.04,
+          "oos_year": 2024,
+          "purged_signals": 0,
+          "variant": "atrpct"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": 37.3134,
+          "fold": "f4-2023-2025",
+          "is_best_rr": 2.5,
+          "is_grid": {
+            "1.5": -15.8886,
+            "2.0": -19.1164,
+            "2.5": -11.3119,
+            "3.0": -12.4981
+          },
+          "is_neighbours": {
+            "2.0": -19.1164,
+            "3.0": -12.4981
+          },
+          "is_total_r": -11.3119,
+          "is_trades": 61,
+          "is_years": [
+            2023,
+            2024
+          ],
+          "odr": null,
+          "oos_max_dd_pct": 10.01,
+          "oos_total_r": 26.0015,
+          "oos_trades": 143,
+          "oos_win_rate_pct": 35.66,
+          "oos_year": 2025,
+          "purged_signals": 0,
+          "variant": "atrpct"
+        }
+      ],
+      "is_aggregate_r": 6.5415,
+      "label": "BACKTEST / NOT VERIFIED",
+      "odr_folds": [
+        -0.256
+      ],
+      "oos_positive_segments": "1/4",
+      "oos_stitched_r": 4.2912,
+      "wfe": 0.656
+    },
+    "base": {
+      "best_rr_sequence": [
+        1.5,
+        2.0,
+        2.5,
+        2.5
+      ],
+      "cliffs": 4,
+      "folds": [
+        {
+          "cliff_at_best": true,
+          "degradation_r": -15.93,
+          "fold": "f1-2020-2022",
+          "is_best_rr": 1.5,
+          "is_grid": {
+            "1.5": 5.181,
+            "2.0": -2.5696,
+            "2.5": -3.2489,
+            "3.0": 0.6281
+          },
+          "is_neighbours": {
+            "2.0": -2.5696
+          },
+          "is_total_r": 5.181,
+          "is_trades": 166,
+          "is_years": [
+            2020,
+            2021
+          ],
+          "odr": -2.075,
+          "oos_max_dd_pct": 10.28,
+          "oos_total_r": -10.749,
+          "oos_trades": 18,
+          "oos_win_rate_pct": 16.67,
+          "oos_year": 2022,
+          "purged_signals": 0,
+          "variant": "base"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": 9.2974,
+          "fold": "f2-2021-2023",
+          "is_best_rr": 2.0,
+          "is_grid": {
+            "1.5": -15.8616,
+            "2.0": -13.6918,
+            "2.5": -15.5372,
+            "3.0": -17.5298
+          },
+          "is_neighbours": {
+            "1.5": -15.8616,
+            "2.5": -15.5372
+          },
+          "is_total_r": -13.6918,
+          "is_trades": 47,
+          "is_years": [
+            2021,
+            2022
+          ],
+          "odr": null,
+          "oos_max_dd_pct": 8.76,
+          "oos_total_r": -4.3944,
+          "oos_trades": 31,
+          "oos_win_rate_pct": 29.03,
+          "oos_year": 2023,
+          "purged_signals": 0,
+          "variant": "base"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": 10.7651,
+          "fold": "f3-2022-2024",
+          "is_best_rr": 2.5,
+          "is_grid": {
+            "1.5": -20.9252,
+            "2.0": -15.6732,
+            "2.5": -8.973,
+            "3.0": -22.1582
+          },
+          "is_neighbours": {
+            "2.0": -15.6732,
+            "3.0": -22.1582
+          },
+          "is_total_r": -8.973,
+          "is_trades": 47,
+          "is_years": [
+            2022,
+            2023
+          ],
+          "odr": null,
+          "oos_max_dd_pct": 11.56,
+          "oos_total_r": 1.7921,
+          "oos_trades": 36,
+          "oos_win_rate_pct": 30.56,
+          "oos_year": 2024,
+          "purged_signals": 0,
+          "variant": "base"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": 10.0078,
+          "fold": "f4-2023-2025",
+          "is_best_rr": 2.5,
+          "is_grid": {
+            "1.5": -10.8793,
+            "2.0": -4.7463,
+            "2.5": 1.562,
+            "3.0": -13.7551
+          },
+          "is_neighbours": {
+            "2.0": -4.7463,
+            "3.0": -13.7551
+          },
+          "is_total_r": 1.562,
+          "is_trades": 64,
+          "is_years": [
+            2023,
+            2024
+          ],
+          "odr": 7.407,
+          "oos_max_dd_pct": 10.83,
+          "oos_total_r": 11.5698,
+          "oos_trades": 138,
+          "oos_win_rate_pct": 32.61,
+          "oos_year": 2025,
+          "purged_signals": 1,
+          "variant": "base"
+        }
+      ],
+      "is_aggregate_r": -15.9218,
+      "label": "BACKTEST / NOT VERIFIED",
+      "odr_folds": [
+        -2.075,
+        7.407
+      ],
+      "oos_positive_segments": "2/4",
+      "oos_stitched_r": -1.7815,
+      "wfe": null
+    },
+    "session": {
+      "best_rr_sequence": [
+        2.0,
+        2.0,
+        2.5,
+        3.0
+      ],
+      "cliffs": 4,
+      "folds": [
+        {
+          "cliff_at_best": true,
+          "degradation_r": 5.2603,
+          "fold": "f1-2020-2022",
+          "is_best_rr": 2.0,
+          "is_grid": {
+            "1.5": -1.8575,
+            "2.0": 4.2439,
+            "2.5": -20.198,
+            "3.0": -18.7544
+          },
+          "is_neighbours": {
+            "1.5": -1.8575,
+            "2.5": -20.198
+          },
+          "is_total_r": 4.2439,
+          "is_trades": 119,
+          "is_years": [
+            2020,
+            2021
+          ],
+          "odr": 2.239,
+          "oos_max_dd_pct": 6.36,
+          "oos_total_r": 9.5042,
+          "oos_trades": 72,
+          "oos_win_rate_pct": 40.28,
+          "oos_year": 2022,
+          "purged_signals": 0,
+          "variant": "session"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": -19.303,
+          "fold": "f2-2021-2023",
+          "is_best_rr": 2.0,
+          "is_grid": {
+            "1.5": -0.7485,
+            "2.0": 14.0193,
+            "2.5": 5.3672,
+            "3.0": 6.3512
+          },
+          "is_neighbours": {
+            "1.5": -0.7485,
+            "2.5": 5.3672
+          },
+          "is_total_r": 14.0193,
+          "is_trades": 130,
+          "is_years": [
+            2021,
+            2022
+          ],
+          "odr": -0.377,
+          "oos_max_dd_pct": 11.66,
+          "oos_total_r": -5.2837,
+          "oos_trades": 23,
+          "oos_win_rate_pct": 26.09,
+          "oos_year": 2023,
+          "purged_signals": 0,
+          "variant": "session"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": -17.8184,
+          "fold": "f3-2022-2024",
+          "is_best_rr": 2.5,
+          "is_grid": {
+            "1.5": -5.3026,
+            "2.0": 4.2205,
+            "2.5": 13.2308,
+            "3.0": 12.1317
+          },
+          "is_neighbours": {
+            "2.0": 4.2205,
+            "3.0": 12.1317
+          },
+          "is_total_r": 13.2308,
+          "is_trades": 93,
+          "is_years": [
+            2022,
+            2023
+          ],
+          "odr": -0.347,
+          "oos_max_dd_pct": 10.03,
+          "oos_total_r": -4.5876,
+          "oos_trades": 16,
+          "oos_win_rate_pct": 18.75,
+          "oos_year": 2024,
+          "purged_signals": 0,
+          "variant": "session"
+        },
+        {
+          "cliff_at_best": true,
+          "degradation_r": 18.4931,
+          "fold": "f4-2023-2025",
+          "is_best_rr": 3.0,
+          "is_grid": {
+            "1.5": -11.0218,
+            "2.0": -12.1843,
+            "2.5": -5.7849,
+            "3.0": -5.2273
+          },
+          "is_neighbours": {
+            "2.5": -5.7849
+          },
+          "is_total_r": -5.2273,
+          "is_trades": 44,
+          "is_years": [
+            2023,
+            2024
+          ],
+          "odr": null,
+          "oos_max_dd_pct": 10.51,
+          "oos_total_r": 13.2658,
+          "oos_trades": 50,
+          "oos_win_rate_pct": 32.0,
+          "oos_year": 2025,
+          "purged_signals": 1,
+          "variant": "session"
+        }
+      ],
+      "is_aggregate_r": 26.2667,
+      "label": "BACKTEST / NOT VERIFIED",
+      "odr_folds": [
+        2.239,
+        -0.377,
+        -0.347
+      ],
+      "oos_positive_segments": "2/4",
+      "oos_stitched_r": 12.8987,
+      "wfe": 0.491
+    }
+  },
+  "verification": "NOT VERIFIED"
+}
