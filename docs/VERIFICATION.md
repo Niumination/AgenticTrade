@@ -39,8 +39,14 @@ Sumber data mentah: [`backtest/results/bt1-summary.json`](../backtest/results/bt
   batasan metodologi di bawah — biaya belum dimodelkan lengkap, sehingga angka di
   atas kemungkinan **overstate** performa.
 - Kesimpulan yang didukung data: strategi v0.1 **belum layak dijalankan** pada akun
-  mana pun. Iterasi v0.2 berjalan dengan fokus pada perbaikan yang diarahkan oleh
-  temuan review dan backlog Sprint 4.
+  mana pun. Iterasi v0.2 (biaya penuh + filter regime) dan v0.3 (walk-forward
+  optimization, 144 trials, 4 varian filter) telah dijalankan — hasilnya juga
+  **TIDAK robust**: out-of-sample stitched terbaik (+29,46R varian ADX) gagal
+  plateau/cliff check dan didominasi satu periode pasar (2022). Kriteria STOP
+  terpicu — lihat [`docs/ROBUSTNESS.md`](docs/ROBUSTNESS.md) dan
+  [`docs/WALKFORWARD.md`](docs/WALKFORWARD.md). Iterasi rule-based v0.x
+  dihentikan; proyek beralih ke **Fase 2** (verifikasi forward via akun demo +
+  Myfxbook, panduan di [`docs/FASE2_SETUP_ID.md`](docs/FASE2_SETUP_ID.md)).
 
 # Batasan Metodologi
 
